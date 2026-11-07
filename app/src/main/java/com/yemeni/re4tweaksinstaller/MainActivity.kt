@@ -158,8 +158,9 @@ class MainActivity : AppCompatActivity() {
                 .getModule("iso_handler")
                 .callAttr("run_full_patch", isoPath, outputIsoPath, variant)
 
-            val resultMap = result.asMap()
-            val ok = resultMap["ok"]?.toBoolean() ?: false
+            // result is a Python dict; asMap() has PyObject keys, so a String
+            // lookup does not compile. Use dict.get() through callAttr instead.
+            val ok = result.callAttr("get", "ok")?.toBoolean() ?: false
 
             withContext(Dispatchers.Main) {
                 progressBar.visibility = ProgressBar.GONE
@@ -167,7 +168,7 @@ class MainActivity : AppCompatActivity() {
                 patchButton.isEnabled = true
 
                 if (ok) {
-                    val message = resultMap["message"]?.toString() ?: "Done."
+                    val message = result.callAttr("get", "message")?.toString() ?: "Done."
                     statusText.text = "✅ $message"
                 } else {
                     // These error strings come straight from the original
@@ -175,7 +176,7 @@ class MainActivity : AppCompatActivity() {
                     // data, unknown menu/HUD state, etc.) or from
                     // iso_handler's own IsoHandlerError — already written
                     // to be meaningful to the end user.
-                    val error = resultMap["error"]?.toString() ?: "Unknown error."
+                    val error = result.callAttr("get", "error")?.toString() ?: "Unknown error."
                     statusText.text = "❌ $error"
                 }
             }

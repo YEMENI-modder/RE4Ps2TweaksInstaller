@@ -29,6 +29,14 @@ android {
             pip {
                 install "pycdlib"
             }
+
+            // The build machine's Python (3.11) differs from the Python bundled
+            // into the APK (Chaquopy default), so .pyc precompilation can't run
+            // and only produced warnings. Python sources are compiled on device.
+            pyc {
+                src false
+                pip false
+            }
         }
     }
 
@@ -67,4 +75,6 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.11.0'
     implementation 'androidx.activity:activity-ktx:1.8.2'
+    // MainActivity imports kotlinx.coroutines directly, so declare it explicitly.
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3'
 }
