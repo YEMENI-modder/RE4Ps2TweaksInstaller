@@ -1,0 +1,35 @@
+dados_en/ — English translation variant of the menu string table
+===================================================================
+
+This folder is a parallel copy of dados/ where every *_files_v*.bin
+file (the versioned menu caves containing the on-screen text table,
+e.g. "HP DOS INIMIGOS") has had its strings translated from
+Portuguese to English. No code, offsets, hooks, or binary structure
+was touched — only the null-terminated ASCII strings in the text
+table, each replaced with a same-length-or-shorter English string
+padded with the same trailing \x00 bytes as the original.
+
+EXCEPTION — do not translate these 6 files, ever:
+  SLES_files.bin
+  SLES_alternativo_files.bin
+  SLUS_files.bin
+  SLUS_alternativo_files.bin
+  SLPM_files.bin
+  SLPM_alternativo_files.bin
+
+Why: installer_core.py's patch() calls FilesUsed.install_extension(),
+which hard-checks these specific (no-version-suffix) files against a
+FIXED sha256 stored in <region>.json's "files_used" -> "sha256" field:
+
+    payload = load(tag + '_files.bin')
+    if len(payload) != cp['filesz'] or hashlib.sha256(payload).hexdigest() != cp['sha256']:
+        fail('Dados da extensao corrompidos')
+
+Translating these 6 would change their bytes and therefore their
+sha256, making that check fail for every single install attempt,
+English or Portuguese. All OTHER versioned files (_files_v18.bin,
+_files_v19_9.bin, etc.) are checked differently — against an
+"allowed list" of in-memory byte comparisons, not a fixed hash — so
+translating those is safe as long as the same translated copy is
+consistently loaded by `load()` (which it is, since patch() always
+loads from whichever dados/ or dados_en/ folder is passed as `root`).

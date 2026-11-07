@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--
+        No READ/WRITE_EXTERNAL_STORAGE needed: the ISO is picked via the
+        Storage Access Framework (ACTION_OPEN_DOCUMENT in MainActivity),
+        which grants a scoped, temporary content:// URI permission
+        without requiring broad storage permissions. The patched output
+        ISO is written to getExternalFilesDir(), which is always
+        app-scoped and permission-free on API 19+.
+    -->
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="RE4 Tweaks Installer"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.AppCompat.DayNight">
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+    </application>
+
+</manifest>

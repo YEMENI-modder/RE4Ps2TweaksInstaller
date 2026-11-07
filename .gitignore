@@ -1,0 +1,24 @@
+# Android Studio / Gradle
+*.iml
+.gradle/
+/local.properties
+/.idea/
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+.cxx
+*.apk
+*.aab
+
+# Chaquopy build cache
+app/.chaquopy/
+
+# Keystores (never commit signing keys)
+*.jks
+*.keystore
+
+# Large test files - never commit actual game ISOs/executables
+*.iso
+*.bin.iso
+/test_isos/

@@ -1,0 +1,266 @@
+{
+  "serial": "SLUS_211.34",
+  "hook_offset": 1223464,
+  "hook_original": "7251090c00000000",
+  "hook_new": "00940e0c00000000",
+  "cave_offset": 2777088,
+  "size": 11520,
+  "guards": [
+    {
+      "offset": 1223448,
+      "hex": "7001bd2700000000f0ffbd270000bfff"
+    },
+    {
+      "offset": 1223472,
+      "hex": "0000bfdf0800e0031000bd2700000000"
+    },
+    {
+      "offset": 1397760,
+      "hex": "e0ffbd271000b07f0000bfff9c78090c"
+    },
+    {
+      "offset": 1398304,
+      "hex": "d0ffbd272000b07f1000b17f0000bfff"
+    },
+    {
+      "offset": 1398384,
+      "hex": "d0ffbd272000b07f1000b17f0000bfff"
+    },
+    {
+      "offset": 1397848,
+      "hex": "d0ffbd272000b07f1000b17f0000bfff"
+    },
+    {
+      "offset": 1398216,
+      "hex": "d0ffbd272000bfff0051090c2d20a003"
+    },
+    {
+      "offset": 476632,
+      "hex": "e0ffbd271000b07f0000bfff4100023c"
+    },
+    {
+      "offset": 1168272,
+      "hex": "ff00a530421105008010020021208200"
+    },
+    {
+      "offset": 1154724,
+      "hex": "000000004200043ceeb6060cc0b58424"
+    },
+    {
+      "offset": 1154748,
+      "hex": "4300033c501962dc0020423013004010"
+    },
+    {
+      "offset": 1215752,
+      "hex": "00000000"
+    },
+    {
+      "offset": 1215872,
+      "hex": "00000000"
+    },
+    {
+      "offset": 1215928,
+      "hex": "285ae426"
+    },
+    {
+      "offset": 1216124,
+      "hex": "00000000"
+    },
+    {
+      "offset": 1308240,
+      "hex": "40ffbd27a000b07f4300103c9000b17f"
+    },
+    {
+      "offset": 1404264,
+      "hex": "4500023cb0ffbd274500033c88164224"
+    },
+    {
+      "offset": 1171992,
+      "hex": "d0ffbd272000b07f1000bfff3200023c"
+    },
+    {
+      "offset": 469016,
+      "hex": "f0ffbd270000bffff0c5050cffff0524"
+    },
+    {
+      "offset": 1224416,
+      "hex": "f0ffbd270000bfff824f090c00000000"
+    },
+    {
+      "offset": 1401724,
+      "hex": "4500063c000080ae000060a6408115000816c624"
+    }
+  ],
+  "labels": {
+    "main": 3821568,
+    "reset_cache": 3821868,
+    "clear": 3821880,
+    "room_ready": 3821900,
+    "scan": 3822012,
+    "new_actor": 3822196,
+    "old_actor": 3822208,
+    "have_max": 3822224,
+    "peak_ready": 3822244,
+    "max_ready": 3822260,
+    "find_place": 3822352,
+    "insert": 3822392,
+    "shift": 3822396,
+    "put": 3822432,
+    "next": 3822440,
+    "selected": 3822452,
+    "height_ready": 3822532,
+    "row": 3823116,
+    "color_done": 3823352,
+    "row_next": 3823400,
+    "packet_cleanup": 3823528,
+    "end": 3823544,
+    "rect": 3823652,
+    "glyph": 3823808,
+    "glyph_valid": 3823848,
+    "glyph_row": 3823876,
+    "glyph_bit": 3823892,
+    "glyph_skip": 3823964,
+    "text": 3824068,
+    "text_loop": 3824080,
+    "text_end": 3824120,
+    "number": 3824136,
+    "digit": 3824160,
+    "emit_digit": 3824212,
+    "digit_next": 3824232,
+    "enemy_name": 3824276,
+    "family_default": 3824324,
+    "read_class": 3824328,
+    "class_scan": 3824444,
+    "hex_ok_4": 3824624,
+    "hex_ok_5": 3824668,
+    "class_next": 3824688,
+    "class_ready": 3824704,
+    "ganado_name": 3824824,
+    "ganado_family": 3824880,
+    "bella_name": 3824960,
+    "ganado_regular": 3824976,
+    "plain_ganado": 3825084,
+    "soldier_name": 3825100,
+    "base_name": 3825116,
+    "hex_digit_2_2": 3825232,
+    "hex_digit_2_3": 3825264,
+    "hex_digit_6_6": 3825296,
+    "hex_digit_6_7": 3825328,
+    "name_done": 3825336,
+    "name_none": 3825344,
+    "names": 3825356,
+    "em42_names": 3825888,
+    "iron_name": 3826039,
+    "bella_text": 3826051,
+    "salvador_name": 3826065,
+    "cultist_name": 3826077,
+    "ganado_text": 3826084,
+    "soldier_text": 3826091,
+    "font": 3826100
+  },
+  "symbols": {
+    "pG": 3298056,
+    "EmMgr": 4326320,
+    "pPL": 4326352,
+    "SubScreenWk": 4289920,
+    "IdSys": 4348456,
+    "__3OTW": 2442240,
+    "Open__3OTW": 2442784,
+    "Close__3OTW": 2442864,
+    "_$_3OTW": 2442328,
+    "SubScreenCall__Fv": 1521112,
+    "setCk__8IDSystem8ID_CLASS": 2212752,
+    "_7PS2VIF1$nose_vif1": 4707988,
+    "_7PS2VIF1$current_size": 4720468,
+    "Render__3OTW": 2442696,
+    "PadRead__Fv": 2352720,
+    "TaskScheduler__Fv": 2448744,
+    "move__8IDSystem": 2216472,
+    "Joy": 4394904,
+    "Key": 4397368,
+    "SndSePauseAll__FUi": 1513496,
+    "InitGameTime__Fv": 2268896
+  },
+  "sha256_payload": "85c6773549292f3344f22d2bc4fe9dd4569efe0801fb0c88cc1940894f59df79",
+  "early_hook_offset": 1154740,
+  "early_original": "76cd050c00000000",
+  "menu_offset": 2736128,
+  "menu_size": 8192,
+  "menu_labels": {
+    "input": 3780608,
+    "disconnected": 3780716,
+    "buttons_ready": 3780720,
+    "menu_active": 3780984,
+    "option_input": 3781088,
+    "size_input": 3781132,
+    "size_less": 3781188,
+    "size_store": 3781208,
+    "close": 3781220,
+    "wait_release": 3781240,
+    "restore_done": 3781276,
+    "block_keys": 3781300,
+    "input_done": 3781328,
+    "tasks": 3781364,
+    "tasks_paused": 3781408,
+    "ids": 3781420,
+    "ids_paused": 3781464,
+    "draw": 3781476,
+    "highlight_size": 3782312,
+    "rows": 3782344,
+    "draw_off": 3782444,
+    "draw_size": 3782468,
+    "draw_half": 3782556,
+    "draw_small": 3782588,
+    "draw_normal": 3782620,
+    "draw_large": 3782652,
+    "draw_help": 3782676,
+    "preview_height_ready": 3782764,
+    "draw_cleanup": 3783064,
+    "draw_return": 3783120,
+    "title": 3783128,
+    "section": 3783143,
+    "option": 3783157,
+    "size": 3783173,
+    "size50": 3783190,
+    "size75": 3783194,
+    "size100": 3783198,
+    "size125": 3783203,
+    "size150": 3783208,
+    "arrows": 3783213,
+    "preview": 3783241,
+    "on": 3783248,
+    "off": 3783255,
+    "confirm": 3783265,
+    "back": 3783277,
+    "paused": 3783286
+  },
+  "menu_state": 3826752,
+  "physical_packet": 4527624,
+  "sha256_menu": "edf9fa90345ccab3fd9378ac0ac522011c60dcb1adbcae5e52f6a7b1e1792601",
+  "menu_hooks": [
+    {
+      "offset": 1215748,
+      "original": "94f9080c",
+      "new": "006c0e0c",
+      "label": "input"
+    },
+    {
+      "offset": 1215868,
+      "original": "5a57090c",
+      "new": "bd6c0e0c",
+      "label": "tasks"
+    },
+    {
+      "offset": 1215924,
+      "original": "8674080c",
+      "new": "cb6c0e0c",
+      "label": "ids"
+    },
+    {
+      "offset": 1216120,
+      "original": "8674080c",
+      "new": "cb6c0e0c",
+      "label": "ids"
+    }
+  ]
+}
