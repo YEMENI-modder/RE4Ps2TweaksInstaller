@@ -24,7 +24,8 @@ import java.io.FileOutputStream
  *   1. User taps "Select ISO File" -> Storage Access Framework picker
  *      (ACTION_OPEN_DOCUMENT) opens, scoped to .iso / .bin extensions
  *      isn't natively filterable by MIME on all devices, so we accept
- *      "*/*" and just check the filename extension ourselves.
+ *      any MIME type (wildcard) and just check the filename extension
+ *      ourselves.
  *   2. We copy the picked content:// Uri into the app's own files dir
  *      as a plain file, because Python's `open()` cannot read a
  *      content:// Uri directly — it needs a real filesystem path.
