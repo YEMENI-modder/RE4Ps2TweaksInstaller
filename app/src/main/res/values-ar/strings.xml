@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="header_subtitle">تويكات القائمة لنسخة PS2</string>
+    <string name="switch_language_label">English</string>
+    <string name="switch_language_desc">تغيير لغة التطبيق إلى الإنجليزية</string>
+    <string name="busy_cannot_switch_language">انتظر حتى تنتهي المهمة الحالية.</string>
+
+    <string name="step1_title">اختر ملف الـ ISO</string>
+    <string name="step1_hint">اختر ملف ISO للعبة Resident Evil 4 على PS2. يُكتب التويك مباشرة داخل هذا الملف.</string>
+    <string name="select_iso">اختيار ISO</string>
+    <string name="select_other_iso">اختيار ملف آخر</string>
+    <string name="iso_region_format">المنطقة %1$s</string>
+    <string name="iso_mode_in_place">قراءة مباشرة</string>
+    <string name="iso_mode_copied">نسخة داخل التطبيق</string>
+    <string name="iso_output_label">سيُحفظ الملف المعدّل باسم</string>
+    <string name="iso_output_label_in_place">سيُكتب التويك داخل هذا الملف</string>
+    <string name="iso_backup_format">النسخة الاحتياطية: %1$s</string>
+    <string name="backup_title">تفعيل نسخة احتياطية</string>
+    <string name="backup_hint">يحفظ الـ ISO الأصلي بدون تويك كملف منفصل باسم _Og قبل الباتش.</string>
+    <string name="backup_off_warning">النسخة الاحتياطية مطفية: سيتم الكتابة فوق الـ ISO الأصلي ولا يمكن استرجاعه.</string>
+
+    <string name="step2_title">لغة القائمة</string>
+    <string name="step2_hint">لغة قائمة التويك داخل اللعبة.</string>
+
+    <string name="step3_title">تطبيق الباتش</string>
+    <string name="apply_patch">تطبيق الباتش</string>
+    <string name="apply_hint_no_iso">اختر ملف ISO أولًا لتفعيل الباتش.</string>
+    <string name="done_step_description">اكتملت الخطوة</string>
+
+    <string name="working_reading">جارٍ قراءة الملف…</string>
+    <string name="working_copying">جارٍ نسخ الملف إلى تخزين التطبيق… قد يستغرق دقيقة للملفات الكبيرة.</string>
+    <string name="working_backup_patching">جارٍ نسخ الـ ISO احتياطيًا ثم التعديل بقائمة %1$s… أبقِ التطبيق مفتوحًا.</string>
+    <string name="working_patching">جارٍ التعديل بقائمة %1$s… أبقِ التطبيق مفتوحًا.</string>
+
+    <string name="perm_title">صلاحية مطلوبة</string>
+    <string name="perm_body">اسمح للتطبيق بالوصول إلى الملفات ليحفظ الملف المعدّل بجانب الأصلي، ثم اضغط اختيار ISO مرة أخرى.</string>
+    <string name="read_error_title">تعذّرت قراءة هذا الملف</string>
+    <string name="patch_success_title">تم تطبيق الباتش</string>
+    <string name="patch_error_title">تعذّر تعديل هذا الملف</string>
+    <string name="unexpected_error">خطأ غير متوقع: %1$s</string>
+    <string name="note_not_writable">مجلد الملف للقراءة فقط بالنسبة للتطبيق، لذلك سيُحفظ الناتج في Download كملف جديد.</string>
+    <string name="note_no_access">لم تُمنح صلاحية الملفات، لذلك سيُحفظ الناتج في مجلد Download.</string>
+    <string name="note_folder_not_found">تعذّر العثور على مجلد الملف الأصلي، لذلك سيُحفظ الناتج في Download.</string>
+
+    <string name="credits_title">الكريدت</string>
+    <string name="credits_designed_by">صُمّم التطبيق وطُوّر بواسطة Yemeni</string>
+    <string name="credits_github_desc">فتح حساب Yemeni على GitHub في المتصفح</string>
+    <string name="credits_tweak_title">التويك الأصلي</string>
+    <string name="credits_tweak_body">تويك Menu Tweaks PS2 (صحة الأعداء، Memory Viewer، الكاميرا الحرة، الشيتات وغيرها) هو عمل مطوريه الأصليين وليس عمل هذا التطبيق. هذه قنوات يوتيوب معروفة بنشره وتغطيته:</string>
+    <string name="credits_tweak_video">فيديو عرض التويك الأصلي</string>
+    <string name="credits_wrapper">مبني على منطق مُثبّت Menu Tweaks PS2 الأصلي.</string>
+    <string name="version_format">الإصدار %1$s</string>
+    <string name="no_browser">لا يوجد متصفح لفتح الرابط.</string>
+</resources>

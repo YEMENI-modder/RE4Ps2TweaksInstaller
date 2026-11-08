@@ -1,0 +1,243 @@
+{
+  "serial": "SLES_537.02",
+  "hook_offset": 1223840,
+  "hook_original": "d051090c00000000",
+  "hook_new": "00940e0c00000000",
+  "cave_offset": 2777088,
+  "size": 11520,
+  "guards": [
+    {
+      "offset": 1223824,
+      "hex": "7001bd2700000000f0ffbd270000bfff"
+    },
+    {
+      "offset": 1223848,
+      "hex": "0000bfdf0800e0031000bd2700000000"
+    },
+    {
+      "offset": 1398136,
+      "hex": "e0ffbd271000b07f0000bffffa78090c"
+    },
+    {
+      "offset": 1398680,
+      "hex": "d0ffbd272000b07f1000b17f0000bfff"
+    },
+    {
+      "offset": 1398760,
+      "hex": "d0ffbd272000b07f1000b17f0000bfff"
+    },
+    {
+      "offset": 1398224,
+      "hex": "d0ffbd272000b07f1000b17f0000bfff"
+    },
+    {
+      "offset": 1398592,
+      "hex": "d0ffbd272000bfff5e51090c2d20a003"
+    },
+    {
+      "offset": 476864,
+      "hex": "e0ffbd271000b07f0000bfff4100023c"
+    },
+    {
+      "offset": 1168504,
+      "hex": "ff00a530421105008010020021208200"
+    },
+    {
+      "offset": 1154956,
+      "hex": "000000004200043c28b7060c40b88424"
+    },
+    {
+      "offset": 1154980,
+      "hex": "4300033cd01b62dc0020423013004010"
+    },
+    {
+      "offset": 1215984,
+      "hex": "00000000"
+    },
+    {
+      "offset": 1216104,
+      "hex": "00000000"
+    },
+    {
+      "offset": 1216160,
+      "hex": "a85ce426"
+    },
+    {
+      "offset": 1216356,
+      "hex": "00000000"
+    },
+    {
+      "offset": 1308616,
+      "hex": "40ffbd27a000b07f4300103c9000b17f"
+    },
+    {
+      "offset": 1404640,
+      "hex": "4500023cb0ffbd274500033c08194224"
+    },
+    {
+      "offset": 1172224,
+      "hex": "d0ffbd272000b07f1000bfff3200023c"
+    },
+    {
+      "offset": 469248,
+      "hex": "f0ffbd270000bfff2ac6050cffff0524"
+    },
+    {
+      "offset": 1224792,
+      "hex": "f0ffbd270000bfffe04f090c00000000"
+    },
+    {
+      "offset": 1402100,
+      "hex": "4500063c000080ae000060a6408115008818c624"
+    }
+  ],
+  "labels": {
+    "main": 3821568,
+    "reset_cache": 3821868,
+    "clear": 3821880,
+    "room_ready": 3821900,
+    "scan": 3822012,
+    "new_actor": 3822196,
+    "old_actor": 3822208,
+    "have_max": 3822224,
+    "peak_ready": 3822244,
+    "max_ready": 3822260,
+    "find_place": 3822352,
+    "insert": 3822392,
+    "shift": 3822396,
+    "put": 3822432,
+    "next": 3822440,
+    "selected": 3822452,
+    "row": 3823044,
+    "color_done": 3823280,
+    "row_next": 3823304,
+    "packet_cleanup": 3823432,
+    "end": 3823448,
+    "rect": 3823556,
+    "glyph": 3823712,
+    "glyph_valid": 3823752,
+    "glyph_row": 3823780,
+    "glyph_bit": 3823796,
+    "glyph_skip": 3823868,
+    "text": 3823972,
+    "text_loop": 3823984,
+    "text_end": 3824024,
+    "number": 3824040,
+    "digit": 3824064,
+    "emit_digit": 3824116,
+    "digit_next": 3824136,
+    "enemy_name": 3824180,
+    "family_default": 3824228,
+    "read_class": 3824232,
+    "class_scan": 3824348,
+    "hex_ok_4": 3824528,
+    "hex_ok_5": 3824572,
+    "class_next": 3824592,
+    "class_ready": 3824608,
+    "ganado_name": 3824728,
+    "ganado_family": 3824784,
+    "bella_name": 3824844,
+    "ganado_regular": 3824860,
+    "soldier_name": 3824904,
+    "base_name": 3824920,
+    "hex_digit_2_2": 3825036,
+    "hex_digit_2_3": 3825068,
+    "hex_digit_6_6": 3825100,
+    "hex_digit_6_7": 3825132,
+    "name_done": 3825140,
+    "name_none": 3825148,
+    "names": 3825160,
+    "em42_names": 3825692,
+    "iron_name": 3825855,
+    "bella_text": 3825867,
+    "salvador_name": 3825873,
+    "cultist_name": 3825885,
+    "soldier_text": 3825894,
+    "font": 3825902
+  },
+  "symbols": {
+    "pG": 3298696,
+    "EmMgr": 4326960,
+    "pPL": 4326992,
+    "SubScreenWk": 4290560,
+    "IdSys": 4349096,
+    "__3OTW": 2442616,
+    "Open__3OTW": 2443160,
+    "Close__3OTW": 2443240,
+    "_$_3OTW": 2442704,
+    "SubScreenCall__Fv": 1521344,
+    "setCk__8IDSystem8ID_CLASS": 2212984,
+    "_7PS2VIF1$nose_vif1": 4708628,
+    "_7PS2VIF1$current_size": 4721108,
+    "Render__3OTW": 2443072,
+    "PadRead__Fv": 2353096,
+    "TaskScheduler__Fv": 2449120,
+    "move__8IDSystem": 2216704,
+    "Joy": 4395544,
+    "Key": 4398008,
+    "SndSePauseAll__FUi": 1513728,
+    "InitGameTime__Fv": 2269272
+  },
+  "sha256_payload": "3d2a455b9c0977956afd80f09bcbf3facab6ad94962607cc44b3ba0a1058a2f6",
+  "early_hook_offset": 1154972,
+  "early_original": "b0cd050c00000000",
+  "menu_offset": 2768896,
+  "menu_size": 8192,
+  "menu_labels": {
+    "input": 3813376,
+    "disconnected": 3813484,
+    "buttons_ready": 3813488,
+    "menu_active": 3813752,
+    "close": 3813856,
+    "wait_release": 3813876,
+    "restore_done": 3813912,
+    "block_keys": 3813936,
+    "input_done": 3813964,
+    "tasks": 3814000,
+    "tasks_paused": 3814044,
+    "ids": 3814056,
+    "ids_paused": 3814100,
+    "draw": 3814112,
+    "draw_off": 3814996,
+    "draw_help": 3815020,
+    "draw_cleanup": 3815240,
+    "draw_return": 3815296,
+    "title": 3815304,
+    "section": 3815319,
+    "option": 3815333,
+    "on": 3815349,
+    "off": 3815356,
+    "confirm": 3815366,
+    "back": 3815378,
+    "paused": 3815387
+  },
+  "menu_state": 3826752,
+  "physical_packet": 4528264,
+  "sha256_menu": "4d5bc5b52b3cb7f846c625d62316bc3cc837055965eb9b46240fbd007dee748e",
+  "menu_hooks": [
+    {
+      "offset": 1215980,
+      "original": "f2f9080c",
+      "new": "008c0e0c",
+      "label": "input"
+    },
+    {
+      "offset": 1216100,
+      "original": "b857090c",
+      "new": "9c8c0e0c",
+      "label": "tasks"
+    },
+    {
+      "offset": 1216156,
+      "original": "c074080c",
+      "new": "aa8c0e0c",
+      "label": "ids"
+    },
+    {
+      "offset": 1216352,
+      "original": "c074080c",
+      "new": "aa8c0e0c",
+      "label": "ids"
+    }
+  ]
+}

@@ -1,0 +1,178 @@
+name: Build APK
+
+# Runs on every push/PR to main, and can also be triggered manually
+# from the Actions tab (workflow_dispatch) without needing a push.
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Chaquopy needs a JDK to run Gradle/AGP itself. Temurin 17 is
+      # what current Android Gradle Plugin (8.2.0, set in build.gradle)
+      # expects.
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      # Chaquopy's Gradle plugin shells out to a real Python interpreter
+      # on the BUILD machine (separate from the Python it bundles INTO
+      # the APK for the Android device) to resolve/download the pip
+      # packages listed in app/build.gradle's `python { pip { install } }`
+      # block (pycdlib here) and to run its own build-time tooling.
+      # Without this step, the Chaquopy plugin fails immediately with
+      # "Can't find Python".
+      - name: Set up Python (for Chaquopy's build-time tooling)
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      # Gradle is installed by the official setup action (same version as
+      # gradle/wrapper/gradle-wrapper.properties), so the build does not
+      # depend on the wrapper script's executable bit.
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v3
+        with:
+          gradle-version: '8.4'
+
+      # Builds the debug APK. This project ships no release signing
+      # config (see build.gradle's buildTypes.release — minifyEnabled
+      # false, no signingConfig block), so a "release" build here would
+      # produce an unsigned APK that Android refuses to install as-is.
+      # assembleDebug is auto-signed with Gradle's built-in debug
+      # keystore, installs directly on a device/emulator, and is the
+      # right target until a real release signing config is added.
+      - name: Build debug APK
+        run: gradle assembleDebug --stacktrace
+
+      # Packages the generated APK into a ZIP for the GitHub Release.
+      # The ZIP contains app-debug.apk and replaces the previous ZIP
+      # whenever a new build is pushed to main.
+      - name: Prepare Release ZIP
+        shell: bash
+        run: |
+          releaseDir="release"
+          zipPath="RE4TweaksInstaller-debug-apk.zip"
+          buildDir="app/build/outputs/apk/debug"
+
+          if [ ! -f "$buildDir/app-debug.apk" ]; then
+            echo "Error: app-debug.apk was not found."
+            exit 1
+          fi
+
+          rm -rf "$releaseDir"
+          rm -f "$zipPath"
+
+          mkdir -p "$releaseDir"
+
+          cp "$buildDir/app-debug.apk" "$releaseDir/"
+
+          cd "$releaseDir"
+          zip -9 "../$zipPath" app-debug.apk
+          cd ..
+
+          if [ ! -f "$zipPath" ]; then
+            echo "Error: Failed to create ZIP."
+            exit 1
+          fi
+
+          echo "ZIP created successfully:"
+          echo "$zipPath"
+
+      # Checks whether the GitHub Release with the tag "build-test"
+      # already exists. If it exists, the ZIP will be replaced.
+      # If it does not exist, a new Release will be created.
+      - name: Check Release
+        id: release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if gh api "repos/${GITHUB_REPOSITORY}/releases/tags/build-test" >/dev/null 2>&1; then
+            echo "Release 'Build test' exists."
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "Release 'Build test' does not exist yet."
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      # Creates the GitHub Release if it does not exist.
+      # Pull requests are excluded because they should not publish releases.
+      - name: Create Release
+        if: steps.release.outputs.exists == 'false' && github.event_name != 'pull_request'
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create build-test \
+            RE4TweaksInstaller-debug-apk.zip \
+            --title "Build test" \
+            --notes "Latest automatic build from commit $GITHUB_SHA"
+
+          if [ $? -ne 0 ]; then
+            echo "Failed to create GitHub Release."
+            exit 1
+          fi
+
+          echo "Release created successfully."
+
+      # Updates the existing Release by replacing the previous ZIP.
+      # --clobber ensures that the old asset is overwritten.
+      - name: Update Release
+        if: steps.release.outputs.exists == 'true' && github.event_name != 'pull_request'
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release upload build-test \
+            RE4TweaksInstaller-debug-apk.zip \
+            --clobber
+
+          if [ $? -ne 0 ]; then
+            echo "Failed to upload ZIP."
+            exit 1
+          fi
+
+          gh release edit build-test \
+            --title "Build test" \
+            --notes "Latest automatic build from commit $GITHUB_SHA"
+
+          if [ $? -ne 0 ]; then
+            echo "Failed to update Release."
+            exit 1
+          fi
+
+          echo "Release updated successfully."
+
+      # Displays the direct download URL and GitHub Release URL.
+      - name: Show Download Link
+        if: github.event_name != 'pull_request'
+        shell: bash
+        run: |
+          repo="$GITHUB_REPOSITORY"
+          downloadUrl="https://github.com/$repo/releases/download/build-test/RE4TweaksInstaller-debug-apk.zip"
+
+          echo ""
+          echo "========================================"
+          echo "BUILD COMPLETED!"
+          echo ""
+          echo "Download:"
+          echo "$downloadUrl"
+          echo ""
+          echo "Release:"
+          echo "https://github.com/$repo/releases/tag/build-test"
+          echo "========================================"

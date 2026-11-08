@@ -1,0 +1,636 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg"
+    android:orientation="vertical">
+
+    <!-- App bar: icon, title and the app-language switch -->
+    <LinearLayout
+        android:id="@+id/appBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:minHeight="72dp"
+        android:orientation="horizontal"
+        android:paddingStart="@dimen/screen_gutter"
+        android:paddingTop="@dimen/space_sm"
+        android:paddingEnd="@dimen/space_sm"
+        android:paddingBottom="@dimen/space_sm">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:importantForAccessibility="no"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/ic_launcher"
+            app:shapeAppearanceOverlay="@style/ShapeAppearance.RE4.Icon" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/space_md"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/appTitle"
+                style="@style/TextAppearance.RE4.Title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="@string/header_title"
+                android:textDirection="ltr" />
+
+            <TextView
+                android:id="@+id/appSubtitle"
+                style="@style/TextAppearance.RE4.Secondary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/header_subtitle" />
+        </LinearLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/languageButton"
+            style="@style/Widget.RE4.Button.Header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/switch_language_desc"
+            android:text="@string/switch_language_label"
+            app:icon="@drawable/ic_language"
+            app:iconPadding="8dp" />
+    </LinearLayout>
+
+    <ScrollView
+        android:id="@+id/scroll"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:clipToPadding="false"
+        android:fillViewport="true"
+        android:paddingStart="@dimen/screen_gutter"
+        android:paddingTop="@dimen/space_sm"
+        android:paddingEnd="@dimen/screen_gutter"
+        android:paddingBottom="@dimen/space_xl">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Step 1: ISO -->
+            <com.google.android.material.card.MaterialCardView
+                style="@style/Widget.RE4.Card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/card_padding">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <FrameLayout
+                            android:layout_width="32dp"
+                            android:layout_height="32dp">
+
+                            <TextView
+                                android:id="@+id/badge1Number"
+                                style="@style/TextAppearance.RE4.Section"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/bg_badge"
+                                android:gravity="center"
+                                android:text="1"
+                                android:textSize="15sp" />
+
+                            <ImageView
+                                android:id="@+id/badge1Done"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/bg_badge_done"
+                                android:contentDescription="@string/done_step_description"
+                                android:padding="6dp"
+                                android:src="@drawable/ic_check"
+                                android:visibility="gone"
+                                app:tint="@color/success" />
+                        </FrameLayout>
+
+                        <TextView
+                            style="@style/TextAppearance.RE4.Section"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/space_md"
+                            android:layout_weight="1"
+                            android:text="@string/step1_title" />
+                    </LinearLayout>
+
+                    <TextView
+                        style="@style/TextAppearance.RE4.Secondary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_sm"
+                        android:text="@string/step1_hint" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/pickIsoButton"
+                        style="@style/Widget.RE4.Button.Tonal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_lg"
+                        android:text="@string/select_iso"
+                        app:icon="@drawable/ic_folder_open" />
+
+                    <LinearLayout
+                        android:id="@+id/isoInfoPanel"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_md"
+                        android:background="@drawable/bg_panel_neutral"
+                        android:orientation="vertical"
+                        android:padding="@dimen/space_lg"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:id="@+id/isoNameText"
+                            style="@style/TextAppearance.RE4.Body"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="middle"
+                            android:fontFamily="sans-serif-medium"
+                            android:maxLines="2"
+                            android:textDirection="ltr" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/space_sm"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/regionPill"
+                                style="@style/Widget.RE4.Pill"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+
+                            <TextView
+                                android:id="@+id/modePill"
+                                style="@style/Widget.RE4.Pill"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/space_sm" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/outputLabelText"
+                            style="@style/TextAppearance.RE4.Caption"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/space_md"
+                            android:text="@string/iso_output_label" />
+
+                        <TextView
+                            android:id="@+id/outputPathText"
+                            style="@style/TextAppearance.RE4.Secondary"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/space_xs"
+                            android:textColor="@color/text_primary"
+                            android:textDirection="ltr"
+                            android:textIsSelectable="true" />
+
+                        <TextView
+                            android:id="@+id/backupInfoText"
+                            style="@style/TextAppearance.RE4.Secondary"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/space_sm"
+                            android:textDirection="ltr"
+                            android:textIsSelectable="true"
+                            android:visibility="gone" />
+
+                        <TextView
+                            android:id="@+id/fallbackNoteText"
+                            style="@style/TextAppearance.RE4.Secondary"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/space_sm"
+                            android:textColor="@color/warning"
+                            android:visibility="gone" />
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Step 2: menu language -->
+            <com.google.android.material.card.MaterialCardView
+                style="@style/Widget.RE4.Card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_lg">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/card_padding">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            style="@style/TextAppearance.RE4.Section"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:background="@drawable/bg_badge"
+                            android:gravity="center"
+                            android:text="2"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            style="@style/TextAppearance.RE4.Section"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/space_md"
+                            android:layout_weight="1"
+                            android:text="@string/step2_title" />
+                    </LinearLayout>
+
+                    <TextView
+                        style="@style/TextAppearance.RE4.Secondary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_sm"
+                        android:text="@string/step2_hint" />
+
+                    <com.google.android.material.button.MaterialButtonToggleGroup
+                        android:id="@+id/variantToggleGroup"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_lg"
+                        android:orientation="vertical"
+                        app:checkedButton="@+id/btnOriginal"
+                        app:selectionRequired="true"
+                        app:singleSelection="true">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnOriginal"
+                            style="@style/Widget.RE4.Button.Toggle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/lang_original" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnEnglish"
+                            style="@style/Widget.RE4.Button.Toggle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/lang_english" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnArabic"
+                            style="@style/Widget.RE4.Button.Toggle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/lang_arabic" />
+                    </com.google.android.material.button.MaterialButtonToggleGroup>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Step 3: apply -->
+            <com.google.android.material.card.MaterialCardView
+                style="@style/Widget.RE4.Card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_lg">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/card_padding">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            style="@style/TextAppearance.RE4.Section"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:background="@drawable/bg_badge"
+                            android:gravity="center"
+                            android:text="3"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            style="@style/TextAppearance.RE4.Section"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/space_md"
+                            android:layout_weight="1"
+                            android:text="@string/step3_title" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/backupRow"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_lg"
+                        android:gravity="center_vertical"
+                        android:minHeight="@dimen/touch_min"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                style="@style/TextAppearance.RE4.Body"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/backup_title" />
+
+                            <TextView
+                                style="@style/TextAppearance.RE4.Secondary"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/backup_hint" />
+                        </LinearLayout>
+
+                        <com.google.android.material.materialswitch.MaterialSwitch
+                            android:id="@+id/backupSwitch"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/space_md"
+                            android:checked="true"
+                            android:contentDescription="@string/backup_title" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/backupOffWarning"
+                        style="@style/TextAppearance.RE4.Secondary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_sm"
+                        android:text="@string/backup_off_warning"
+                        android:textColor="@color/warning"
+                        android:visibility="gone" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/patchButton"
+                        style="@style/Widget.RE4.Button.Primary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_lg"
+                        android:enabled="false"
+                        android:text="@string/apply_patch"
+                        app:icon="@drawable/ic_play" />
+
+                    <TextView
+                        android:id="@+id/applyHintText"
+                        style="@style/TextAppearance.RE4.Secondary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_sm"
+                        android:text="@string/apply_hint_no_iso" />
+
+                    <com.google.android.material.progressindicator.LinearProgressIndicator
+                        android:id="@+id/progressBar"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_lg"
+                        android:indeterminate="true"
+                        android:visibility="gone"
+                        app:indicatorColor="@color/accent"
+                        app:trackColor="@color/badge_bg"
+                        app:trackCornerRadius="4dp" />
+
+                    <TextView
+                        android:id="@+id/progressLabel"
+                        style="@style/TextAppearance.RE4.Secondary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_sm"
+                        android:accessibilityLiveRegion="polite"
+                        android:visibility="gone" />
+
+                    <LinearLayout
+                        android:id="@+id/statusPanel"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_lg"
+                        android:accessibilityLiveRegion="polite"
+                        android:background="@drawable/bg_panel_neutral"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/space_lg"
+                        android:visibility="gone">
+
+                        <ImageView
+                            android:id="@+id/statusIcon"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:importantForAccessibility="no" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/space_md"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/statusTitle"
+                                style="@style/TextAppearance.RE4.Body"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="sans-serif-medium" />
+
+                            <TextView
+                                android:id="@+id/statusBody"
+                                style="@style/TextAppearance.RE4.Secondary"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/space_xs"
+                                android:textIsSelectable="true" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Credits -->
+            <com.google.android.material.card.MaterialCardView
+                style="@style/Widget.RE4.Card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_lg">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/card_padding">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:importantForAccessibility="no"
+                            android:src="@drawable/ic_code"
+                            app:tint="@color/accent_text" />
+
+                        <TextView
+                            style="@style/TextAppearance.RE4.Section"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/space_md"
+                            android:text="@string/credits_title" />
+                    </LinearLayout>
+
+                    <TextView
+                        style="@style/TextAppearance.RE4.Body"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_md"
+                        android:text="@string/credits_designed_by" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/githubButton"
+                        style="@style/Widget.RE4.Button.Link"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_md"
+                        android:contentDescription="@string/credits_github_desc"
+                        android:text="@string/credits_github_label"
+                        android:textDirection="ltr"
+                        app:icon="@drawable/ic_external_link"
+                        app:iconGravity="textEnd" />
+
+                    <TextView
+                        style="@style/TextAppearance.RE4.Secondary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_md"
+                        android:text="@string/credits_wrapper" />
+
+                    <TextView
+                        style="@style/TextAppearance.RE4.Body"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_lg"
+                        android:fontFamily="sans-serif-medium"
+                        android:text="@string/credits_tweak_title" />
+
+                    <TextView
+                        style="@style/TextAppearance.RE4.Secondary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_xs"
+                        android:text="@string/credits_tweak_body" />
+
+                    <LinearLayout
+                        android:id="@+id/tweakLinks"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <com.google.android.material.button.MaterialButton
+                            style="@style/Widget.RE4.Button.Link"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/space_sm"
+                            android:tag="https://youtube.com/@dn_e_voce"
+                            android:text="@dn_e_voce"
+                            android:textDirection="ltr"
+                            app:icon="@drawable/ic_external_link"
+                            app:iconGravity="textEnd" />
+                        <com.google.android.material.button.MaterialButton
+                            style="@style/Widget.RE4.Button.Link"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/space_sm"
+                            android:tag="https://youtube.com/@hardrainmodder"
+                            android:text="@hardrainmodder"
+                            android:textDirection="ltr"
+                            app:icon="@drawable/ic_external_link"
+                            app:iconGravity="textEnd" />
+                        <com.google.android.material.button.MaterialButton
+                            style="@style/Widget.RE4.Button.Link"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/space_sm"
+                            android:tag="https://youtube.com/@eusoujeffgamers"
+                            android:text="@eusoujeffgamers"
+                            android:textDirection="ltr"
+                            app:icon="@drawable/ic_external_link"
+                            app:iconGravity="textEnd" />
+                        <com.google.android.material.button.MaterialButton
+                            style="@style/Widget.RE4.Button.Link"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/space_sm"
+                            android:tag="https://youtube.com/@o_ceifeiro_x"
+                            android:text="@o_ceifeiro_x"
+                            android:textDirection="ltr"
+                            app:icon="@drawable/ic_external_link"
+                            app:iconGravity="textEnd" />
+                        <com.google.android.material.button.MaterialButton
+                            style="@style/Widget.RE4.Button.Link"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/space_sm"
+                            android:tag="https://youtube.com/@walymodder"
+                            android:text="@walymodder"
+                            android:textDirection="ltr"
+                            app:icon="@drawable/ic_external_link"
+                            app:iconGravity="textEnd" />
+                        <com.google.android.material.button.MaterialButton
+                            style="@style/Widget.RE4.Button.Link"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/space_sm"
+                            android:tag="https://youtube.com/@herikre4ps2"
+                            android:text="@herikre4ps2"
+                            android:textDirection="ltr"
+                            app:icon="@drawable/ic_external_link"
+                            app:iconGravity="textEnd" />
+                        <com.google.android.material.button.MaterialButton
+                            style="@style/Widget.RE4.Button.Link"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/space_sm"
+                            android:tag="https://youtu.be/Sn5NMTdCEzw"
+                            android:text="@string/credits_tweak_video"
+                            app:icon="@drawable/ic_external_link"
+                            app:iconGravity="textEnd" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/versionText"
+                        style="@style/TextAppearance.RE4.Caption"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_sm" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

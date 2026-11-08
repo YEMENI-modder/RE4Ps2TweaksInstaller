@@ -1,0 +1,25 @@
+# Gradle / Android Studio
+.gradle/
+build/
+app/build/
+local.properties
+captures/
+.externalNativeBuild/
+.cxx/
+*.iml
+.idea/
+
+# Python
+__pycache__/
+*.pyc
+
+# Signing material (never commit)
+*.jks
+*.keystore
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Keep the wrapper jar tracked
+!gradle/wrapper/gradle-wrapper.jar

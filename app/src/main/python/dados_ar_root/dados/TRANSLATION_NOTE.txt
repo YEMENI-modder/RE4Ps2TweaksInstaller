@@ -1,0 +1,2 @@
+Arabic variant - see tools/build_arabic_dados.py and tools/arabic_font.py.
+Regenerate with: python3 tools/build_arabic_dados.py

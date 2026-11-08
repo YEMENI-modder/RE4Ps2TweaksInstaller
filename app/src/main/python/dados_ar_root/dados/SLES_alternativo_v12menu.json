@@ -1,0 +1,542 @@
+{
+  "serial": "SLES_537.02",
+  "hook_offset": 1223840,
+  "hook_original": "d051090c00000000",
+  "hook_new": "00940e0c00000000",
+  "cave_offset": 2777088,
+  "size": 11520,
+  "guards": [
+    {
+      "offset": 1223824,
+      "hex": "7001bd2700000000f0ffbd270000bfff"
+    },
+    {
+      "offset": 1223848,
+      "hex": "0000bfdf0800e0031000bd2700000000"
+    },
+    {
+      "offset": 1398136,
+      "hex": "e0ffbd271000b07f0000bffffa78090c"
+    },
+    {
+      "offset": 1398680,
+      "hex": "d0ffbd272000b07f1000b17f0000bfff"
+    },
+    {
+      "offset": 1398760,
+      "hex": "d0ffbd272000b07f1000b17f0000bfff"
+    },
+    {
+      "offset": 1398224,
+      "hex": "d0ffbd272000b07f1000b17f0000bfff"
+    },
+    {
+      "offset": 1398592,
+      "hex": "d0ffbd272000bfff5e51090c2d20a003"
+    },
+    {
+      "offset": 476864,
+      "hex": "e0ffbd271000b07f0000bfff4100023c"
+    },
+    {
+      "offset": 1168504,
+      "hex": "ff00a530421105008010020021208200"
+    },
+    {
+      "offset": 1154956,
+      "hex": "000000004200043c28b7060c40b88424"
+    },
+    {
+      "offset": 1154980,
+      "hex": "4300033cd01b62dc0020423013004010"
+    },
+    {
+      "offset": 1215984,
+      "hex": "00000000"
+    },
+    {
+      "offset": 1216104,
+      "hex": "00000000"
+    },
+    {
+      "offset": 1216160,
+      "hex": "a85ce426"
+    },
+    {
+      "offset": 1216356,
+      "hex": "00000000"
+    },
+    {
+      "offset": 1308616,
+      "hex": "40ffbd27a000b07f4300103c9000b17f"
+    },
+    {
+      "offset": 1404640,
+      "hex": "4500023cb0ffbd274500033c08194224"
+    },
+    {
+      "offset": 1172224,
+      "hex": "d0ffbd272000b07f1000bfff3200023c"
+    },
+    {
+      "offset": 469248,
+      "hex": "f0ffbd270000bfff2ac6050cffff0524"
+    },
+    {
+      "offset": 1224792,
+      "hex": "f0ffbd270000bfffe04f090c00000000"
+    },
+    {
+      "offset": 1402100,
+      "hex": "4500063c000080ae000060a6408115008818c624"
+    },
+    {
+      "offset": 1406000,
+      "hex": "500303244500023c1820830008194224212082000800e0030400829000000000"
+    },
+    {
+      "offset": 1405192,
+      "hex": "c0ffbd273000b07f2000b17f2d8080001000b27f2d88a0000000bfff0c59090c"
+    },
+    {
+      "offset": 46216,
+      "hex": "c0ffbd273000b07f2000b17f1000b27f0000bfff2d9080003200023c8855438c"
+    },
+    {
+      "offset": 46704,
+      "hex": "f0ffbd270200a230060040100000bfff3200023c8855438c0800628c08004234"
+    },
+    {
+      "offset": 1366448,
+      "hex": "f0ffbd274200023c0000bfff000b04245006428c180143940500641400000000"
+    },
+    {
+      "offset": 1373208,
+      "hex": "60ffbd277000b07f6000b17f2d8080005000b27f4000b37f3000b47f2000b57f"
+    },
+    {
+      "offset": 687464,
+      "hex": "00ffbd27d000b07fc000b17fb000b27fa000b37f9000b47f8000bffff000b6e7"
+    },
+    {
+      "offset": 1366448,
+      "hex": "f0ffbd274200023c0000bfff000b04245006428c180143940500641400000000"
+    },
+    {
+      "offset": 1373208,
+      "hex": "60ffbd277000b07f6000b17f2d8080005000b27f4000b37f3000b47f2000b57f"
+    },
+    {
+      "offset": 687464,
+      "hex": "00ffbd27d000b07fc000b17fb000b27fa000b37f9000b47f8000bffff000b6e7"
+    },
+    {
+      "offset": 1749576,
+      "hex": "d0ffbd271000b1ff0000b0ff2d8880002d80a0002000bfff2d2800000bbe0a0c2d300002030023320400022423184300040060104700043c23102302908b82ac23800302822810004700063c80100500908b91ac21102202988bc5ac4700033c2d202002948b62acffffa52476a90a0c2d3000002000bfdf"
+    },
+    {
+      "offset": 1749720,
+      "hex": "c0ffbd272d3880003000bfff2000b2ff1000b1ff2600e0100000b0ff4700043c4700053c908b868c0300e230948ba38c2b100200822007002d8800002b18c300"
+    }
+  ],
+  "labels": {
+    "main": 3821568,
+    "reset_cache": 3821880,
+    "clear": 3821892,
+    "room_ready": 3821912,
+    "scan": 3822024,
+    "new_actor": 3822208,
+    "old_actor": 3822220,
+    "have_max": 3822236,
+    "peak_ready": 3822256,
+    "max_ready": 3822272,
+    "find_place": 3822364,
+    "insert": 3822404,
+    "shift": 3822408,
+    "put": 3822444,
+    "next": 3822452,
+    "selected": 3822464,
+    "row": 3823056,
+    "color_done": 3823292,
+    "row_next": 3823316,
+    "packet_cleanup": 3823444,
+    "end": 3823460,
+    "rect": 3823568,
+    "hud_anchor_first": 3823684,
+    "scale_first": 3823700,
+    "scaled_first": 3823748,
+    "hud_anchor_second": 3823876,
+    "scale_second": 3823892,
+    "scaled_second": 3823940,
+    "glyph": 3823988,
+    "glyph_valid": 3824028,
+    "glyph_row": 3824056,
+    "glyph_bit": 3824072,
+    "glyph_skip": 3824144,
+    "text": 3824248,
+    "text_loop": 3824260,
+    "text_end": 3824300,
+    "number": 3824316,
+    "digit": 3824340,
+    "emit_digit": 3824392,
+    "digit_next": 3824412,
+    "enemy_name": 3824456,
+    "family_default": 3824504,
+    "read_class": 3824508,
+    "class_scan": 3824624,
+    "hex_ok_4": 3824804,
+    "hex_ok_5": 3824848,
+    "class_next": 3824868,
+    "class_ready": 3824884,
+    "ganado_name": 3825004,
+    "ganado_family": 3825060,
+    "bella_name": 3825168,
+    "ganado_regular": 3825184,
+    "zealot_name": 3825276,
+    "plain_ganado": 3825292,
+    "soldier_name": 3825308,
+    "base_name": 3825324,
+    "hex_digit_2_2": 3825440,
+    "hex_digit_2_3": 3825472,
+    "hex_digit_6_6": 3825504,
+    "hex_digit_6_7": 3825536,
+    "name_done": 3825544,
+    "name_none": 3825552,
+    "names": 3825564,
+    "em42_names": 3826096,
+    "iron_name": 3826247,
+    "bella_text": 3826259,
+    "salvador_name": 3826273,
+    "cultist_name": 3826285,
+    "ganado_text": 3826292,
+    "soldier_text": 3826299,
+    "font": 3826308
+  },
+  "symbols": {
+    "pG": 3298696,
+    "EmMgr": 4326960,
+    "pPL": 4326992,
+    "SubScreenWk": 4290560,
+    "IdSys": 4349096,
+    "__3OTW": 2442616,
+    "Open__3OTW": 2443160,
+    "Close__3OTW": 2443240,
+    "_$_3OTW": 2442704,
+    "SubScreenCall__Fv": 1521344,
+    "setCk__8IDSystem8ID_CLASS": 2212984,
+    "_7PS2VIF1$nose_vif1": 4708628,
+    "_7PS2VIF1$current_size": 4721108,
+    "Render__3OTW": 2443072,
+    "PadRead__Fv": 2353096,
+    "TaskScheduler__Fv": 2449120,
+    "move__8IDSystem": 2216704,
+    "Joy": 4395544,
+    "Key": 4398008,
+    "SndSePauseAll__FUi": 1513728,
+    "InitGameTime__Fv": 2269272,
+    "TaskStatus__FUi": 2450480,
+    "TaskExec__FUiPvT1": 2449672,
+    "CardMainTask__FQ25cCard11access_mode": 1090696,
+    "pSaveData": 4345664,
+    "PlGetWeaponNo__Fv": 2410928,
+    "PlWepLockCtrl__FP7cPlayerUc": 2417688,
+    "move__11CameraScope": 1731944,
+    "sceHiMemInit": 2794056
+  },
+  "sha256_payload": "9b730270a4424692ffd1c15a30921c63a9b201038448378bb5d0e1ebda18a397",
+  "early_hook_offset": 1154972,
+  "early_original": "b0cd050c00000000",
+  "menu_offset": 2736128,
+  "menu_size": 8192,
+  "menu_labels": {
+    "input": 3780608,
+    "disconnected": 3780716,
+    "buttons_ready": 3780720,
+    "menu_active": 3781028,
+    "select_previous": 3781140,
+    "select_check": 3781144,
+    "count_ready": 3781180,
+    "select_high": 3781196,
+    "select_store": 3781212,
+    "tab_back": 3781224,
+    "option_input": 3781256,
+    "main_option": 3781324,
+    "size_input": 3781384,
+    "sensitivity_input": 3781404,
+    "adjust": 3781444,
+    "adjust_less": 3781500,
+    "adjust_store": 3781520,
+    "save_selected": 3781532,
+    "ram_toggle": 3781548,
+    "close": 3781576,
+    "wait_release": 3781596,
+    "restore_done": 3781632,
+    "save_active": 3781844,
+    "block_keys": 3781984,
+    "input_done": 3782012,
+    "tasks": 3782048,
+    "tasks_paused": 3782092,
+    "ids": 3782104,
+    "ids_paused": 3782148,
+    "draw": 3782160,
+    "draw_begin": 3782400,
+    "draw_main": 3783176,
+    "draw_hp": 3783208,
+    "draw_highlight": 3783232,
+    "highlight_second": 3783316,
+    "highlight_third": 3783356,
+    "highlight_sub_third": 3783416,
+    "highlight_fourth": 3783456,
+    "draw_rows": 3783488,
+    "rows_main": 3783768,
+    "ram_menu_off": 3783964,
+    "rows_hp": 3783996,
+    "draw_off": 3784096,
+    "draw_size": 3784120,
+    "draw_help": 3784276,
+    "ram_panel": 3784412,
+    "ram_refresh": 3784484,
+    "ram_cached": 3784520,
+    "ram_unknown": 3784792,
+    "draw_finalize": 3784840,
+    "draw_cleanup": 3784968,
+    "draw_restore": 3784984,
+    "draw_return": 3785024,
+    "sensitivity_lock": 3785032,
+    "lock_knife": 3785180,
+    "lock_factor": 3785192,
+    "lock_restore": 3785236,
+    "scope_analog_h": 3785336,
+    "scope_analog_h_rifle": 3785396,
+    "scope_analog_h_native": 3785448,
+    "scope_analog_h_finish": 3785456,
+    "scope_analog_v": 3785476,
+    "scope_analog_v_rifle": 3785536,
+    "scope_analog_v_native": 3785588,
+    "scope_analog_v_finish": 3785596,
+    "scope_dpad_h1": 3785616,
+    "scope_dpad_h1_rifle": 3785676,
+    "scope_dpad_h1_native": 3785728,
+    "scope_dpad_h1_finish": 3785732,
+    "scope_dpad_h2": 3785756,
+    "scope_dpad_h2_rifle": 3785816,
+    "scope_dpad_h2_native": 3785868,
+    "scope_dpad_h2_finish": 3785872,
+    "scope_dpad_v1": 3785896,
+    "scope_dpad_v1_rifle": 3785956,
+    "scope_dpad_v1_native": 3786008,
+    "scope_dpad_v1_finish": 3786012,
+    "scope_dpad_v2": 3786036,
+    "scope_dpad_v2_rifle": 3786096,
+    "scope_dpad_v2_native": 3786148,
+    "scope_dpad_v2_finish": 3786152,
+    "speed_factors": 3786176,
+    "analog_coefficients": 3786212,
+    "dpad_coefficients": 3786228,
+    "ram_scan": 3786244,
+    "ram_scan_loop": 3786348,
+    "ram_scan_next": 3786420,
+    "ram_scan_ok": 3786436,
+    "ram_scan_bad": 3786448,
+    "ram_value": 3786460,
+    "size_names": 3786612,
+    "speed_names": 3786632,
+    "rifle_names": 3786672,
+    "memory": 3786692,
+    "ram_title": 3786706,
+    "ram_max": 3786720,
+    "ram_maxval": 3786725,
+    "ram_used": 3786734,
+    "ram_free": 3786741,
+    "ram_na": 3786748,
+    "ram_mb": 3786754,
+    "title": 3786758,
+    "section": 3786773,
+    "option": 3786787,
+    "enabled": 3786803,
+    "size": 3786816,
+    "save": 3786831,
+    "size50": 3786836,
+    "size75": 3786840,
+    "size100": 3786844,
+    "size125": 3786849,
+    "size150": 3786854,
+    "arrows": 3786859,
+    "preview": 3786887,
+    "on": 3786894,
+    "off": 3786901,
+    "confirm": 3786911,
+    "back": 3786923,
+    "paused": 3786932,
+    "sensitivity": 3786945,
+    "default": 3786959,
+    "weapons": 3786967,
+    "knife": 3786973,
+    "rifles": 3786978,
+    "enter": 3786985,
+    "multiplier": 3786987,
+    "speed0": 3787009,
+    "speed1": 3787014,
+    "speed2": 3787019,
+    "speed3": 3787024,
+    "speed4": 3787029,
+    "speed5": 3787034,
+    "speed6": 3787039,
+    "speed7": 3787044,
+    "speed8": 3787049,
+    "rifle0": 3787054,
+    "rifle1": 3787059,
+    "rifle2": 3787064,
+    "rifle3": 3787069
+  },
+  "menu_state": 3826752,
+  "physical_packet": 4528264,
+  "sha256_menu": "a67262726b3c5ca1ace71df2220add3c7ab7742d12c6110fb124e17622fe6542",
+  "menu_hooks": [
+    {
+      "offset": 1215980,
+      "original": "f2f9080c",
+      "new": "006c0e0c",
+      "label": "input"
+    },
+    {
+      "offset": 1216100,
+      "original": "b857090c",
+      "new": "686d0e0c",
+      "label": "tasks"
+    },
+    {
+      "offset": 1216156,
+      "original": "c074080c",
+      "new": "766d0e0c",
+      "label": "ids"
+    },
+    {
+      "offset": 1216352,
+      "original": "c074080c",
+      "new": "766d0e0c",
+      "label": "ids"
+    }
+  ],
+  "sensitivity_hooks": [
+    {
+      "offset": 1373648,
+      "va": 2418128,
+      "original": "181243942d884000",
+      "new": "52700e0800000000",
+      "label": "sensitivity_lock",
+      "accepted": [
+        "181243942d884000",
+        "6e6f0e0800000000",
+        "52700e0800000000"
+      ]
+    },
+    {
+      "offset": 688036,
+      "va": 1732516,
+      "original": "4cbd013ccdcc2134",
+      "new": "9e700e0800000000",
+      "label": "scope_analog_h",
+      "accepted": [
+        "4cbd013ccdcc2134",
+        "ba6f0e0800000000",
+        "b76f0e0800000000",
+        "0020013c00002134",
+        "9e700e0800000000"
+      ]
+    },
+    {
+      "offset": 688284,
+      "va": 1732764,
+      "original": "4cbd013ccdcc2134",
+      "new": "c1700e0800000000",
+      "label": "scope_analog_v",
+      "accepted": [
+        "4cbd013ccdcc2134",
+        "dd6f0e0800000000",
+        "da6f0e0800000000",
+        "0020013c00002134",
+        "c1700e0800000000"
+      ]
+    },
+    {
+      "offset": 688088,
+      "va": 1732568,
+      "original": "f4c340c402180046",
+      "new": "e4700e0800000000",
+      "label": "scope_dpad_h1",
+      "accepted": [
+        "f4c340c402180046",
+        "00700e0800000000",
+        "fd6f0e0800000000",
+        "e4700e0800000000"
+      ]
+    },
+    {
+      "offset": 688148,
+      "va": 1732628,
+      "original": "f4c340c402180046",
+      "new": "07710e0800000000",
+      "label": "scope_dpad_h2",
+      "accepted": [
+        "f4c340c402180046",
+        "23700e0800000000",
+        "20700e0800000000",
+        "07710e0800000000"
+      ]
+    },
+    {
+      "offset": 688336,
+      "va": 1732816,
+      "original": "f8c340c402180046",
+      "new": "2a710e0800000000",
+      "label": "scope_dpad_v1",
+      "accepted": [
+        "f8c340c402180046",
+        "46700e0800000000",
+        "43700e0800000000",
+        "2a710e0800000000"
+      ]
+    },
+    {
+      "offset": 688396,
+      "va": 1732876,
+      "original": "f8c340c402180046",
+      "new": "4d710e0800000000",
+      "label": "scope_dpad_v2",
+      "accepted": [
+        "f8c340c402180046",
+        "69700e0800000000",
+        "66700e0800000000",
+        "4d710e0800000000"
+      ]
+    }
+  ],
+  "retired_hooks": [
+    {
+      "offset": 688200,
+      "va": 1732680,
+      "original": "00100046d40040e4",
+      "new": "bb6f0e0800000000",
+      "label": "sensitivity_scope_h"
+    },
+    {
+      "offset": 688456,
+      "va": 1732936,
+      "original": "700183c600100346",
+      "new": "e46f0e0800000000",
+      "label": "sensitivity_scope_v"
+    }
+  ],
+  "memory_viewer": {
+    "toggle": 3826820,
+    "free": 3826824,
+    "timer": 3826828,
+    "valid": 3826832,
+    "room": 3826836,
+    "draw_flag": 3826840,
+    "max_bytes": 33554432,
+    "refresh_updates": 30,
+    "read_only_allocator": true
+  }
+}

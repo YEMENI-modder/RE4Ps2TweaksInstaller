@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Semantic color tokens (always-dark OLED style).
+  Contrast, checked with the WCAG formula:
+    text_primary on surface 17.0:1, text_secondary on surface 7.3:1,
+    on_accent on accent 4.7:1, accent_text on surface 7.0:1,
+    outline_control on surface 3.9:1 (control boundaries need 3:1).
+-->
+<resources>
+    <color name="bg">#000000</color>
+    <color name="surface">#121214</color>
+    <color name="surface_raised">#1B1B1F</color>
+    <color name="border">#2A2A30</color>
+    <color name="outline_control">#71717A</color>
+
+    <color name="text_primary">#F4F4F5</color>
+    <color name="text_secondary">#A1A1AA</color>
+
+    <color name="accent">#E11D48</color>
+    <color name="on_accent">#FFFFFF</color>
+    <color name="accent_text">#FB7185</color>
+
+    <color name="badge_bg">#27272A</color>
+
+    <color name="success">#4ADE80</color>
+    <color name="success_container">#0F2A1B</color>
+    <color name="success_border">#166534</color>
+    <color name="on_success_container">#D1FADF</color>
+
+    <color name="error">#F87171</color>
+    <color name="error_container">#2D1316</color>
+    <color name="error_border">#7F1D1D</color>
+    <color name="on_error_container">#FEE2E2</color>
+
+    <color name="info">#93C5FD</color>
+    <color name="info_container">#101B2E</color>
+    <color name="info_border">#1E3A8A</color>
+    <color name="on_info_container">#DBEAFE</color>
+
+    <color name="warning">#FBBF24</color>
+</resources>

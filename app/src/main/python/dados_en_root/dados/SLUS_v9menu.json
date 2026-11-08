@@ -1,0 +1,475 @@
+{
+  "serial": "SLUS_211.34",
+  "hook_offset": 1223464,
+  "hook_original": "7251090c00000000",
+  "hook_new": "00940e0c00000000",
+  "cave_offset": 2777088,
+  "size": 11520,
+  "guards": [
+    {
+      "offset": 1223448,
+      "hex": "7001bd2700000000f0ffbd270000bfff"
+    },
+    {
+      "offset": 1223472,
+      "hex": "0000bfdf0800e0031000bd2700000000"
+    },
+    {
+      "offset": 1397760,
+      "hex": "e0ffbd271000b07f0000bfff9c78090c"
+    },
+    {
+      "offset": 1398304,
+      "hex": "d0ffbd272000b07f1000b17f0000bfff"
+    },
+    {
+      "offset": 1398384,
+      "hex": "d0ffbd272000b07f1000b17f0000bfff"
+    },
+    {
+      "offset": 1397848,
+      "hex": "d0ffbd272000b07f1000b17f0000bfff"
+    },
+    {
+      "offset": 1398216,
+      "hex": "d0ffbd272000bfff0051090c2d20a003"
+    },
+    {
+      "offset": 476632,
+      "hex": "e0ffbd271000b07f0000bfff4100023c"
+    },
+    {
+      "offset": 1168272,
+      "hex": "ff00a530421105008010020021208200"
+    },
+    {
+      "offset": 1154724,
+      "hex": "000000004200043ceeb6060cc0b58424"
+    },
+    {
+      "offset": 1154748,
+      "hex": "4300033c501962dc0020423013004010"
+    },
+    {
+      "offset": 1215752,
+      "hex": "00000000"
+    },
+    {
+      "offset": 1215872,
+      "hex": "00000000"
+    },
+    {
+      "offset": 1215928,
+      "hex": "285ae426"
+    },
+    {
+      "offset": 1216124,
+      "hex": "00000000"
+    },
+    {
+      "offset": 1308240,
+      "hex": "40ffbd27a000b07f4300103c9000b17f"
+    },
+    {
+      "offset": 1404264,
+      "hex": "4500023cb0ffbd274500033c88164224"
+    },
+    {
+      "offset": 1171992,
+      "hex": "d0ffbd272000b07f1000bfff3200023c"
+    },
+    {
+      "offset": 469016,
+      "hex": "f0ffbd270000bffff0c5050cffff0524"
+    },
+    {
+      "offset": 1224416,
+      "hex": "f0ffbd270000bfff824f090c00000000"
+    },
+    {
+      "offset": 1401724,
+      "hex": "4500063c000080ae000060a6408115000816c624"
+    },
+    {
+      "offset": 1405624,
+      "hex": "500303244500023c1820830088164224212082000800e0030400829000000000"
+    },
+    {
+      "offset": 1404816,
+      "hex": "c0ffbd273000b07f2000b17f2d8080001000b27f2d88a0000000bfffae58090c"
+    },
+    {
+      "offset": 45848,
+      "hex": "c0ffbd273000b07f2000b17f1000b27f0000bfff2d9080003200023c0853438c"
+    },
+    {
+      "offset": 46336,
+      "hex": "f0ffbd270200a230060040100000bfff3200023c0853438c0800628c08004234"
+    },
+    {
+      "offset": 1366072,
+      "hex": "f0ffbd274200023c0000bfff000b0424d003428c180143940500641400000000"
+    },
+    {
+      "offset": 1372832,
+      "hex": "60ffbd277000b07f6000b17f2d8080005000b27f4000b37f3000b47f2000b57f"
+    },
+    {
+      "offset": 687232,
+      "hex": "00ffbd27d000b07fc000b17fb000b27fa000b37f9000b47f8000bffff000b6e7"
+    }
+  ],
+  "labels": {
+    "main": 3821568,
+    "reset_cache": 3821880,
+    "clear": 3821892,
+    "room_ready": 3821912,
+    "scan": 3822024,
+    "new_actor": 3822208,
+    "old_actor": 3822220,
+    "have_max": 3822236,
+    "peak_ready": 3822256,
+    "max_ready": 3822272,
+    "find_place": 3822364,
+    "insert": 3822404,
+    "shift": 3822408,
+    "put": 3822444,
+    "next": 3822452,
+    "selected": 3822464,
+    "row": 3823056,
+    "color_done": 3823292,
+    "row_next": 3823316,
+    "packet_cleanup": 3823444,
+    "end": 3823460,
+    "rect": 3823568,
+    "hud_anchor_first": 3823672,
+    "scale_first": 3823688,
+    "scaled_first": 3823736,
+    "hud_anchor_second": 3823852,
+    "scale_second": 3823868,
+    "scaled_second": 3823916,
+    "glyph": 3823964,
+    "glyph_valid": 3824004,
+    "glyph_row": 3824032,
+    "glyph_bit": 3824048,
+    "glyph_skip": 3824120,
+    "text": 3824224,
+    "text_loop": 3824236,
+    "text_end": 3824276,
+    "number": 3824292,
+    "digit": 3824316,
+    "emit_digit": 3824368,
+    "digit_next": 3824388,
+    "enemy_name": 3824432,
+    "family_default": 3824480,
+    "read_class": 3824484,
+    "class_scan": 3824600,
+    "hex_ok_4": 3824780,
+    "hex_ok_5": 3824824,
+    "class_next": 3824844,
+    "class_ready": 3824860,
+    "ganado_name": 3824980,
+    "ganado_family": 3825036,
+    "bella_name": 3825144,
+    "ganado_regular": 3825160,
+    "zealot_name": 3825252,
+    "plain_ganado": 3825268,
+    "soldier_name": 3825284,
+    "base_name": 3825300,
+    "hex_digit_2_2": 3825416,
+    "hex_digit_2_3": 3825448,
+    "hex_digit_6_6": 3825480,
+    "hex_digit_6_7": 3825512,
+    "name_done": 3825520,
+    "name_none": 3825528,
+    "names": 3825540,
+    "em42_names": 3826072,
+    "iron_name": 3826223,
+    "bella_text": 3826235,
+    "salvador_name": 3826249,
+    "cultist_name": 3826261,
+    "ganado_text": 3826268,
+    "soldier_text": 3826275,
+    "font": 3826284
+  },
+  "symbols": {
+    "pG": 3298056,
+    "EmMgr": 4326320,
+    "pPL": 4326352,
+    "SubScreenWk": 4289920,
+    "IdSys": 4348456,
+    "__3OTW": 2442240,
+    "Open__3OTW": 2442784,
+    "Close__3OTW": 2442864,
+    "_$_3OTW": 2442328,
+    "SubScreenCall__Fv": 1521112,
+    "setCk__8IDSystem8ID_CLASS": 2212752,
+    "_7PS2VIF1$nose_vif1": 4707988,
+    "_7PS2VIF1$current_size": 4720468,
+    "Render__3OTW": 2442696,
+    "PadRead__Fv": 2352720,
+    "TaskScheduler__Fv": 2448744,
+    "move__8IDSystem": 2216472,
+    "Joy": 4394904,
+    "Key": 4397368,
+    "SndSePauseAll__FUi": 1513496,
+    "InitGameTime__Fv": 2268896,
+    "TaskStatus__FUi": 2450104,
+    "TaskExec__FUiPvT1": 2449296,
+    "CardMainTask__FQ25cCard11access_mode": 1090328,
+    "pSaveData": 4345024,
+    "PlGetWeaponNo__Fv": 2410552,
+    "PlWepLockCtrl__FP7cPlayerUc": 2417312,
+    "move__11CameraScope": 1731712
+  },
+  "sha256_payload": "4f8d1afe4fd6bf65fb589fc3cb676b7f9c27e6b0ac4913cee2ac6b756d0c47c4",
+  "early_hook_offset": 1154740,
+  "early_original": "76cd050c00000000",
+  "menu_offset": 2768896,
+  "menu_size": 8192,
+  "menu_labels": {
+    "input": 3813376,
+    "disconnected": 3813484,
+    "buttons_ready": 3813488,
+    "menu_active": 3813796,
+    "select_previous": 3813908,
+    "select_check": 3813912,
+    "count_ready": 3813936,
+    "select_high": 3813952,
+    "select_store": 3813968,
+    "tab_back": 3813980,
+    "option_input": 3814012,
+    "main_option": 3814080,
+    "size_input": 3814128,
+    "sensitivity_input": 3814148,
+    "adjust": 3814188,
+    "adjust_less": 3814244,
+    "adjust_store": 3814264,
+    "save_selected": 3814276,
+    "close": 3814292,
+    "wait_release": 3814312,
+    "restore_done": 3814348,
+    "save_active": 3814560,
+    "block_keys": 3814700,
+    "input_done": 3814728,
+    "tasks": 3814764,
+    "tasks_paused": 3814808,
+    "ids": 3814820,
+    "ids_paused": 3814864,
+    "draw": 3814876,
+    "draw_main": 3815692,
+    "draw_hp": 3815724,
+    "draw_highlight": 3815748,
+    "highlight_second": 3815820,
+    "highlight_third": 3815860,
+    "draw_rows": 3815892,
+    "rows_main": 3816172,
+    "rows_hp": 3816300,
+    "draw_off": 3816400,
+    "draw_size": 3816424,
+    "draw_help": 3816580,
+    "draw_cleanup": 3816824,
+    "draw_return": 3816880,
+    "sensitivity_lock": 3816888,
+    "lock_knife": 3817036,
+    "lock_factor": 3817048,
+    "lock_restore": 3817080,
+    "scope_analog_h": 3817180,
+    "scope_analog_h_rifle": 3817240,
+    "scope_analog_h_native": 3817292,
+    "scope_analog_h_finish": 3817300,
+    "scope_analog_v": 3817320,
+    "scope_analog_v_rifle": 3817380,
+    "scope_analog_v_native": 3817432,
+    "scope_analog_v_finish": 3817440,
+    "scope_dpad_h1": 3817460,
+    "scope_dpad_h1_rifle": 3817520,
+    "scope_dpad_h1_native": 3817572,
+    "scope_dpad_h1_finish": 3817576,
+    "scope_dpad_h2": 3817600,
+    "scope_dpad_h2_rifle": 3817660,
+    "scope_dpad_h2_native": 3817712,
+    "scope_dpad_h2_finish": 3817716,
+    "scope_dpad_v1": 3817740,
+    "scope_dpad_v1_rifle": 3817800,
+    "scope_dpad_v1_native": 3817852,
+    "scope_dpad_v1_finish": 3817856,
+    "scope_dpad_v2": 3817880,
+    "scope_dpad_v2_rifle": 3817940,
+    "scope_dpad_v2_native": 3817992,
+    "scope_dpad_v2_finish": 3817996,
+    "speed_factors": 3818020,
+    "analog_coefficients": 3818056,
+    "dpad_coefficients": 3818072,
+    "sensitivity_scope_h": 3817180,
+    "sensitivity_scope_v": 3817320,
+    "size_names": 3818088,
+    "speed_names": 3818108,
+    "rifle_names": 3818144,
+    "title": 3818164,
+    "section": 3818179,
+    "option": 3818193,
+    "enabled": 3818209,
+    "size": 3818222,
+    "save": 3818237,
+    "size50": 3818242,
+    "size75": 3818246,
+    "size100": 3818250,
+    "size125": 3818255,
+    "size150": 3818260,
+    "arrows": 3818265,
+    "preview": 3818293,
+    "on": 3818300,
+    "off": 3818307,
+    "confirm": 3818317,
+    "back": 3818329,
+    "paused": 3818338,
+    "sensitivity": 3818351,
+    "default": 3818365,
+    "weapons": 3818373,
+    "knife": 3818379,
+    "rifles": 3818384,
+    "enter": 3818391,
+    "multiplier": 3818393,
+    "speed0": 3818415,
+    "speed1": 3818420,
+    "speed2": 3818425,
+    "speed3": 3818430,
+    "speed4": 3818435,
+    "speed5": 3818440,
+    "speed6": 3818445,
+    "speed7": 3818450,
+    "speed8": 3818455,
+    "rifle0": 3818460,
+    "rifle1": 3818465,
+    "rifle2": 3818470,
+    "rifle3": 3818475
+  },
+  "menu_state": 3826752,
+  "physical_packet": 4527624,
+  "sha256_menu": "c866eda965c5d3c8e78c4e66740d75147581b3420f09efacf86962639de719f7",
+  "menu_hooks": [
+    {
+      "offset": 1215748,
+      "original": "94f9080c",
+      "new": "008c0e0c",
+      "label": "input"
+    },
+    {
+      "offset": 1215868,
+      "original": "5a57090c",
+      "new": "5b8d0e0c",
+      "label": "tasks"
+    },
+    {
+      "offset": 1215924,
+      "original": "8674080c",
+      "new": "698d0e0c",
+      "label": "ids"
+    },
+    {
+      "offset": 1216120,
+      "original": "8674080c",
+      "new": "698d0e0c",
+      "label": "ids"
+    }
+  ],
+  "sensitivity_hooks": [
+    {
+      "offset": 1373272,
+      "va": 2417752,
+      "original": "980f43942d884000",
+      "new": "6e8f0e0800000000",
+      "label": "sensitivity_lock",
+      "accepted": [
+        "980f43942d884000",
+        "6e8f0e0800000000",
+        "6e8f0e0800000000"
+      ]
+    },
+    {
+      "offset": 687804,
+      "va": 1732284,
+      "original": "4cbd013ccdcc2134",
+      "new": "b78f0e0800000000",
+      "label": "scope_analog_h",
+      "accepted": [
+        "4cbd013ccdcc2134",
+        "b78f0e0800000000",
+        "0020013c00002134"
+      ]
+    },
+    {
+      "offset": 688052,
+      "va": 1732532,
+      "original": "4cbd013ccdcc2134",
+      "new": "da8f0e0800000000",
+      "label": "scope_analog_v",
+      "accepted": [
+        "4cbd013ccdcc2134",
+        "da8f0e0800000000",
+        "0020013c00002134"
+      ]
+    },
+    {
+      "offset": 687856,
+      "va": 1732336,
+      "original": "74c140c402180046",
+      "new": "fd8f0e0800000000",
+      "label": "scope_dpad_h1",
+      "accepted": [
+        "74c140c402180046",
+        "fd8f0e0800000000"
+      ]
+    },
+    {
+      "offset": 687916,
+      "va": 1732396,
+      "original": "74c140c402180046",
+      "new": "20900e0800000000",
+      "label": "scope_dpad_h2",
+      "accepted": [
+        "74c140c402180046",
+        "20900e0800000000"
+      ]
+    },
+    {
+      "offset": 688104,
+      "va": 1732584,
+      "original": "78c140c402180046",
+      "new": "43900e0800000000",
+      "label": "scope_dpad_v1",
+      "accepted": [
+        "78c140c402180046",
+        "43900e0800000000"
+      ]
+    },
+    {
+      "offset": 688164,
+      "va": 1732644,
+      "original": "78c140c402180046",
+      "new": "66900e0800000000",
+      "label": "scope_dpad_v2",
+      "accepted": [
+        "78c140c402180046",
+        "66900e0800000000"
+      ]
+    }
+  ],
+  "retired_hooks": [
+    {
+      "offset": 687968,
+      "va": 1732448,
+      "original": "00100046d40040e4",
+      "new": "bb8f0e0800000000",
+      "label": "sensitivity_scope_h"
+    },
+    {
+      "offset": 688224,
+      "va": 1732704,
+      "original": "700183c600100346",
+      "new": "e48f0e0800000000",
+      "label": "sensitivity_scope_v"
+    }
+  ]
+}

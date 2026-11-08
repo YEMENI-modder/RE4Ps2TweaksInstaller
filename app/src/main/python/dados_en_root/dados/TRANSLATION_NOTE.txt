@@ -1,0 +1,33 @@
+English variant of the menu text
+================================
+
+What the installer actually writes into the executable is, per region:
+
+  <tag>_menu.bin   (RE4 TWEAKS menu: settings, sensitivity, HUD, ...)
+  <tag>_files.bin  (Files Used screen + cheats table)
+
+Earlier builds of this variant translated only the old *_files_v*.bin files,
+which are used just to RECOGNISE previously patched executables. A fresh
+install therefore still showed Portuguese. Now the two files above are
+translated for all six tags (SLUS/SLES/SLPM, normal and alternativo).
+
+Rules followed (so nothing but text changes):
+  - every English string is the same length or shorter, null padded
+  - no code, offsets or pointers were touched
+  - the only other edit is the SHA-256 of those two files in each profile
+    JSON (sha256_menu and files_used.sha256), because the installer refuses
+    data whose hash does not match
+
+Regenerate with: python3 tools/build_english_dados.py
+
+Known length limits: the 5-byte slots for ARMAS and FACA could only fit
+"GUNS" and "KNIF".
+
+The old *_files_v*.bin files are kept byte-identical to the Portuguese
+originals: they only exist to recognise executables patched with an older
+tweak version, and those were all patched with Portuguese data.
+
+Switching language on an already patched ISO: iso_handler._swap_language_text
+rewrites the other language's menu table and Files Used segment to this
+variant's language (only on an exact byte match) before the unchanged
+installer runs, so Portuguese -> English and English -> Portuguese both work.
