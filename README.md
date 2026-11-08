@@ -1,5 +1,7 @@
 # RE4 Tweaks PS2 Installer (Android)
 
+**English** | [العربية](README.ar.md)
+
 [![Stars](https://img.shields.io/github/stars/YEMENI-modder/RE4Ps2TweaksInstaller?style=for-the-badge&logo=github)](https://github.com/YEMENI-modder/RE4Ps2TweaksInstaller/stargazers)
 [![Downloads](https://img.shields.io/github/downloads/YEMENI-modder/RE4Ps2TweaksInstaller/total?style=for-the-badge&logo=android&label=Downloads)](https://github.com/YEMENI-modder/RE4Ps2TweaksInstaller/releases)
 [![Build](https://img.shields.io/github/actions/workflow/status/YEMENI-modder/RE4Ps2TweaksInstaller/build.yml?style=for-the-badge&label=Build)](https://github.com/YEMENI-modder/RE4Ps2TweaksInstaller/actions)
@@ -171,7 +173,7 @@ The same credits are shown inside the app.
 
 ### AI transparency
 
-The code of this project was designed and written entirely by **Claude Sonnet 5.5** (Anthropic's AI
+The code of this project was designed and written entirely by **Claude** (Anthropic's AI
 assistant), including the Android app, the ISO handling and backup logic, the Arabic
 renderer and translation tools, the GitHub Actions build, and this README. **YEMENI**
 directed the work with technical instructions and reviews, made the design decisions,
