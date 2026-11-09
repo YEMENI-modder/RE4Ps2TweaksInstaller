@@ -34,7 +34,11 @@ import struct
 import hashlib
 import tempfile
 import importlib.util
-import pycdlib
+
+try:
+    import pycdlib
+except ImportError:  # the raw ISO9660 reader below is used instead
+    pycdlib = None
 
 
 REGION_PREFIXES = ("SLES_", "SLUS_", "SLPM_")
@@ -107,7 +111,7 @@ class IsoHandlerError(Exception):
     pass
 
 
-def find_boot_executable(iso_path):
+def _pycdlib_find_boot_executable(iso_path):
     """
     Scans the ISO root directory for a file whose name starts with
     SLES_ / SLUS_ / SLPM_ (the PS2 boot executable naming convention).
@@ -140,7 +144,7 @@ def find_boot_executable(iso_path):
         iso.close()
 
 
-def extract_executable(iso_path, iso_internal_path, dest_path):
+def _pycdlib_extract_executable(iso_path, iso_internal_path, dest_path):
     """Pulls the boot executable out of the ISO to a plain file on disk."""
     iso = pycdlib.PyCdlib()
     iso.open(iso_path)
@@ -151,7 +155,7 @@ def extract_executable(iso_path, iso_internal_path, dest_path):
         iso.close()
 
 
-def get_executable_size_on_iso(iso_path, iso_internal_path):
+def _pycdlib_get_executable_size_on_iso(iso_path, iso_internal_path):
     iso = pycdlib.PyCdlib()
     iso.open(iso_path)
     try:
@@ -208,6 +212,132 @@ def _find_root_record(f, iso_internal_path):
     raise IsoHandlerError(
         f"Could not find {iso_internal_path} in the ISO root directory."
     )
+
+
+# ---------------------------------------------------------------------------
+# Fallback: raw ISO9660 reader (no pycdlib)
+#
+# pycdlib also parses the UDF tables of the image and fails on some images
+# whose UDF part is truncated or inconsistent (typical error:
+# "unpack_from requires a buffer of at least 16 bytes ... actual buffer
+# size is 0"), even though emulators - which only read ISO9660 - run them
+# fine. The public functions below try pycdlib FIRST, exactly as before, and
+# only when it raises an unexpected error fall back to reading the ISO9660
+# root directory directly. Images that already worked never reach the
+# fallback code.
+# ---------------------------------------------------------------------------
+
+def _raw_root_files(iso_path):
+    """Yields (name, lba, length) for every FILE in the ISO9660 root directory."""
+    with open(iso_path, "rb") as f:
+        f.seek(16 * _SECTOR)
+        pvd = f.read(_SECTOR)
+        if len(pvd) < _SECTOR or pvd[0] != 1 or pvd[1:6] != b"CD001":
+            raise IsoHandlerError(
+                "Primary Volume Descriptor not found at sector 16; "
+                "this does not look like a plain 2048-byte-sector ISO9660 image."
+            )
+        root = pvd[156:190]
+        root_lba = struct.unpack_from("<I", root, 2)[0]
+        root_len = struct.unpack_from("<I", root, 10)[0]
+        f.seek(root_lba * _SECTOR)
+        data = f.read(root_len)
+
+    entries = []
+    pos = 0
+    while pos < len(data):
+        rec_len = data[pos]
+        if rec_len == 0:
+            pos = (pos // _SECTOR + 1) * _SECTOR
+            continue
+        if pos + 33 > len(data):
+            break
+        flags = data[pos + 25]
+        name_len = data[pos + 32]
+        name = data[pos + 33:pos + 33 + name_len].decode("latin-1")
+        if not (flags & 2) and name not in ("\x00", "\x01"):
+            lba = struct.unpack_from("<I", data, pos + 2)[0]
+            length = struct.unpack_from("<I", data, pos + 10)[0]
+            entries.append((name, lba, length))
+        pos += rec_len
+    return entries
+
+
+def _raw_find_boot_executable(iso_path):
+    for name, _lba, _len in _raw_root_files(iso_path):
+        base = name.split(";")[0].upper()
+        for prefix in REGION_PREFIXES:
+            if base.startswith(prefix):
+                return prefix.rstrip("_"), "/" + name
+    raise IsoHandlerError(
+        "No SLES_/SLUS_/SLPM_ boot executable found at ISO root. "
+        "This may not be a valid PS2 game ISO, or it uses an "
+        "unusual layout this tool doesn't recognize."
+    )
+
+
+def _raw_extract_executable(iso_path, iso_internal_path, dest_path):
+    with open(iso_path, "rb") as f:
+        _off, lba, length = _find_root_record(f, iso_internal_path)
+        f.seek(lba * _SECTOR)
+        remaining = length
+        with open(dest_path, "wb") as out:
+            while remaining > 0:
+                chunk = f.read(min(remaining, 1024 * 1024))
+                if not chunk:
+                    raise IsoHandlerError(
+                        "The ISO is truncated: the boot executable's data "
+                        "extends past the end of the file."
+                    )
+                out.write(chunk)
+                remaining -= len(chunk)
+
+
+def find_boot_executable(iso_path):
+    try:
+        return _pycdlib_find_boot_executable(iso_path)
+    except IsoHandlerError:
+        raise
+    except Exception:
+        return _raw_find_boot_executable(iso_path)
+
+
+def extract_executable(iso_path, iso_internal_path, dest_path):
+    try:
+        return _pycdlib_extract_executable(iso_path, iso_internal_path, dest_path)
+    except IsoHandlerError:
+        raise
+    except Exception:
+        return _raw_extract_executable(iso_path, iso_internal_path, dest_path)
+
+
+def get_executable_size_on_iso(iso_path, iso_internal_path):
+    try:
+        return _pycdlib_get_executable_size_on_iso(iso_path, iso_internal_path)
+    except IsoHandlerError:
+        raise
+    except Exception:
+        with open(iso_path, "rb") as f:
+            _off, _lba, length = _find_root_record(f, iso_internal_path)
+        return length
+
+
+def _get_extent_byte_offset(iso_path, iso_internal_path):
+    try:
+        iso = pycdlib.PyCdlib()
+        iso.open(iso_path)
+        try:
+            record = iso.get_record(iso_path=iso_internal_path)
+            return record.extent_location() * _SECTOR
+        finally:
+            iso.close()
+    except IsoHandlerError:
+        raise
+    except Exception:
+        with open(iso_path, "rb") as f:
+            _off, lba, _length = _find_root_record(f, iso_internal_path)
+        return lba * _SECTOR
+
 
 
 def _has_udf(iso_path):
@@ -357,13 +487,7 @@ def make_backup(iso_path, backup_path):
 def _write_executable(target_iso, iso_internal_path, patched_bytes, original_size):
     """Same size: overwrite at the existing extent. Otherwise: append."""
     if len(patched_bytes) == original_size:
-        iso = pycdlib.PyCdlib()
-        iso.open(target_iso)
-        try:
-            record = iso.get_record(iso_path=iso_internal_path)
-            byte_offset = record.extent_location() * _SECTOR
-        finally:
-            iso.close()
+        byte_offset = _get_extent_byte_offset(target_iso, iso_internal_path)
         with open(target_iso, "r+b") as out:
             out.seek(byte_offset)
             out.write(patched_bytes)
