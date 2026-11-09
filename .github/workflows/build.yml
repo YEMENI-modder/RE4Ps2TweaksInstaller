@@ -4,9 +4,9 @@ name: Build APK
 # from the Actions tab (workflow_dispatch) without needing a push.
 on:
   push:
-    branches: [ main ]
+    branches: [ Claude-edit ]
   pull_request:
-    branches: [ main ]
+    branches: [ Claude-edit ]
   workflow_dispatch: {}
 
 permissions:
