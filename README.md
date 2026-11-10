@@ -1,21 +1,25 @@
 # RE4 Tweaks PS2 Installer (Android)
 
+**English** | [العربية](README.ar.md)
+
 [![Stars](https://img.shields.io/github/stars/YEMENI-modder/RE4Ps2TweaksInstaller?style=for-the-badge&logo=github)](https://github.com/YEMENI-modder/RE4Ps2TweaksInstaller/stargazers)
-[![Downloads](https://img.shields.io/github/downloads/YEMENI-modder/RE4Ps2TweaksInstaller/total?style=for-the-badge&logo=android&label=Downloads)](https://github.com/YEMENI-modder/RE4Ps2TweaksInstaller/releases)
+[![Downloads](https://img.shields.io/github/downloads/YEMENI-modder/RE4Ps2TweaksInstaller/total?style=for-the-badge&logo=android&label=Downloads)](https://github.com/YEMENI-modder/RE4Ps2TweaksInstaller/releases/tag/V1)
 [![Build](https://img.shields.io/github/actions/workflow/status/YEMENI-modder/RE4Ps2TweaksInstaller/build.yml?style=for-the-badge&label=Build)](https://github.com/YEMENI-modder/RE4Ps2TweaksInstaller/actions)
 
 An Android app that installs the **RE4 Menu Tweaks PS2** into your own Resident Evil 4
-(PS2) ISO, entirely on your phone. No PC, no Winlator, no `.bat` file: pick the ISO,
-pick a menu language, tap *Apply patch*.
+(PS2) game image (**ISO or CHD**), entirely on your phone. No PC, no Winlator, no `.bat`
+file: pick the image, pick a menu language, tap *Apply patch*.
 
-It reads the ISO, extracts the boot executable, applies the tweak with the original
-installer's own verification and patch logic, and writes the result back into the ISO.
+It reads the image, extracts the boot executable, applies the tweak with the original
+installer's own verification and patch logic, and writes the result back into the image.
 
 > This is only an installer wrapper. The tweak itself is the work of its original
 > authors, see [Credits](#credits).
 
 ## Features
 
+- **Supports ISO and CHD.** Pick either one, the app detects the type
+  automatically. See [CHD support](#chd-support).
 - **Patches the ISO in place.** `Re4.iso` stays `Re4.iso`. No second 4 GB file, and
   only the new executable (a few MB) is written.
 - **Automatic backup (on by default).** Before patching, your untouched ISO is copied
@@ -23,7 +27,7 @@ installer's own verification and patch logic, and writes the result back into th
   never overwritten, so patching again can't destroy your clean copy.
 - **Safe writing.** The patch is fully computed and verified before the ISO is touched,
   and if writing fails the ISO is rolled back to exactly what it was.
-- **Region auto-detection** (SLES / SLUS / SLPM) from the boot executable at the ISO root.
+- **Region auto-detection** (SLES / SLUS / SLPM) from the boot executable at the image root.
 - **Three menu languages:** Portuguese (original), English, Arabic.
 - **Language conversion.** An ISO that already carries the tweak in another language is
   converted to the one you pick, in any direction.
@@ -32,17 +36,32 @@ installer's own verification and patch logic, and writes the result back into th
 ## How to use
 
 1. Install the APK (see [Releases](https://github.com/YEMENI-modder/RE4Ps2TweaksInstaller/releases) or [build it yourself](#building-from-source)).
-2. Open the app, allow file access when asked, and tap **Select ISO**.
+2. Open the app, allow file access when asked, and tap **Select ISO** (an `.iso` or a `.chd`).
 3. Choose the menu language: Portuguese, English or Arabic.
 4. Leave **Create a backup** on (recommended) and tap **Apply patch**.
 
-When it finishes, `Re4.iso` contains the tweak and `Re4_Og.iso` is your original.
+When it finishes, `Re4.iso` contains the tweak and `Re4_Og.iso` is your original
+(the same applies to `Re4.chd` / `Re4_Og.chd`).
 
 If the app can't get write access to the ISO's real location (for example, file access
 was not granted), it leaves your ISO untouched and saves a patched copy to
-`Download/<name>_Patched.iso` instead.
+`Download/<name>_Patched.iso` (or `.chd`) instead.
 
 You need your own legally obtained ISO. No game files are included in this repository.
+
+## CHD support
+
+CHD files work just like ISOs: pick the `.chd`, choose a language, tap *Apply patch*.
+No conversion needed.
+
+- Only **DVD-type CHDs** are supported (the kind made by `chdman createdvd`, which is what
+  PS2 games use). If a CHD can't be read, the app tells you why; converting it to an ISO
+  always works as a fallback.
+- The result is saved in the same file, with the same backup option as ISOs. Patching a
+  CHD takes longer than an ISO and needs free space of up to about **3x the CHD's size**
+  while it works (original + backup + temporary file); the temporary file is removed when
+  it finishes.
+- CHD support is new. Keep **Create a backup** on and report any problem you run into.
 
 ## Menu variants
 
@@ -58,6 +77,7 @@ You need your own legally obtained ISO. No game files are included in this repos
 - **Python** via [Chaquopy](https://chaquo.com/chaquopy/): the patch logic, taken from the
   original installer without modification.
 - **[pycdlib](https://github.com/clalancette/pycdlib)**: reading the ISO9660 filesystem.
+- **`chd_handler.py`**: reading and rewriting CHD images.
 
 The patch usually makes the executable larger (the Files Used extension adds a segment).
 Rather than rebuilding the filesystem, which would move every file, the new executable is
@@ -71,7 +91,7 @@ shared copy with swapped data, so the original patch code stays byte-identical t
 upstream PC tool in every variant.
 
 Implementation notes live in the code itself:
-`app/src/main/python/iso_handler.py` and
+`app/src/main/python/iso_handler.py`, `app/src/main/python/chd_handler.py` and
 `app/src/main/java/com/yemeni/re4tweaksinstaller/MainActivity.kt`.
 
 ## Building from source
@@ -128,7 +148,8 @@ release.
 
 ```
 app/src/main/java/.../MainActivity.kt    UI and orchestration
-app/src/main/python/iso_handler.py       ISO reading, backup, in-place injection
+app/src/main/python/iso_handler.py       ISO/CHD reading, backup, injection
+app/src/main/python/chd_handler.py       CHD v5 reader / writer
 app/src/main/python/installer_core.py    original patch logic (Portuguese menu)
 app/src/main/python/dados/               original data files
 app/src/main/python/dados_en_root/       English variant (full copy)
@@ -171,7 +192,7 @@ The same credits are shown inside the app.
 
 ### AI transparency
 
-The code of this project was designed and written entirely by **Claude Sonnet 5.5** (Anthropic's AI
+The code of this project was designed and written entirely by **Claude** (Anthropic's AI
 assistant), including the Android app, the ISO handling and backup logic, the Arabic
 renderer and translation tools, the GitHub Actions build, and this README. **YEMENI**
 directed the work with technical instructions and reviews, made the design decisions,
