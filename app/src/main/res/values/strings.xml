@@ -7,9 +7,9 @@
     <string name="switch_language_desc">Change app language to Arabic</string>
     <string name="busy_cannot_switch_language">Please wait until the current task finishes.</string>
 
-    <string name="step1_title">Choose your ISO</string>
-    <string name="step1_hint">Pick your Resident Evil 4 PS2 ISO. The tweak is written directly into this file.</string>
-    <string name="select_iso">Select ISO</string>
+    <string name="step1_title">Choose your ISO or CHD</string>
+    <string name="step1_hint">Pick your Resident Evil 4 PS2 ISO or CHD. The tweak is written directly into this file.</string>
+    <string name="select_iso">Select ISO / CHD</string>
     <string name="select_other_iso">Choose another ISO</string>
     <string name="iso_region_format">Region %1$s</string>
     <string name="iso_mode_in_place">Read in place</string>
@@ -29,13 +29,13 @@
 
     <string name="step3_title">Apply the patch</string>
     <string name="apply_patch">Apply patch</string>
-    <string name="apply_hint_no_iso">Choose an ISO first to enable patching.</string>
+    <string name="apply_hint_no_iso">Choose an ISO or CHD first to enable patching.</string>
     <string name="done_step_description">Step completed</string>
 
     <string name="working_reading">Reading ISO…</string>
     <string name="working_copying">Copying ISO to app storage… this can take a minute for large files.</string>
-    <string name="working_backup_patching">Backing up the ISO, then patching with the %1$s menu… keep the app open.</string>
-    <string name="working_patching">Patching with the %1$s menu… keep the app open.</string>
+    <string name="working_backup_patching">Backing up the file, then patching with the %1$s menu… you can leave the app, it keeps working.</string>
+    <string name="working_patching">Patching with the %1$s menu… you can leave the app, it keeps working.</string>
 
     <string name="perm_title">Permission needed</string>
     <string name="perm_body">Allow file access for this app so the patched ISO can be saved next to the original, then tap Select ISO again.</string>
@@ -54,6 +54,22 @@
     <string name="credits_tweak_title">Original tweak</string>
     <string name="credits_tweak_body">Menu Tweaks PS2 (Enemy HP, Memory Viewer, Free Camera, Cheats and more) is the work of its original authors, not of this app. YouTube channels known for publishing and covering it:</string>
     <string name="credits_tweak_video">Original tweak showcase video</string>
+    <string name="unsupported_file_toast">Only ISO or CHD files are allowed.</string>
+    <string name="unsupported_file_title">Unsupported file</string>
+    <string name="unsupported_file_body">Only .iso and .chd game images can be used. Pick your Resident Evil 4 PS2 ISO or CHD.</string>
+
+    <string name="notif_channel_progress">Patch progress</string>
+    <string name="notif_channel_done">Patch result</string>
+    <string name="notif_running_title">Applying the tweak</string>
+    <string name="notif_running_text">Patching with the %1$s menu…</string>
+    <string name="notif_done_title">Patch applied</string>
+    <string name="notif_error_title">Couldn\'t apply the patch</string>
+    <string name="notif_saved_to">Saved to: %1$s</string>
+
+    <string name="credits_thanks_title">Special thanks</string>
+    <string name="credits_thanks_q8tp1">Thanks to q8tp1 for discovering a bug in the app.</string>
+    <string name="credits_thanks_scorpion">Thanks to scorpion for sharing the app, testing it and suggesting CHD support.</string>
+    <string name="credits_thanks_ahmed">Thanks to Ahmed | Weto for trying the beta version and finding issues.</string>
     <string name="credits_wrapper">Built around the original Menu Tweaks PS2 installer logic.</string>
     <string name="version_format">Version %1$s</string>
     <string name="no_browser">No browser found to open the link.</string>

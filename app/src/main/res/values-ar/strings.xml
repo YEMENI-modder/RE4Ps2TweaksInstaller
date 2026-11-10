@@ -5,9 +5,9 @@
     <string name="switch_language_desc">تغيير لغة التطبيق إلى الإنجليزية</string>
     <string name="busy_cannot_switch_language">انتظر حتى تنتهي المهمة الحالية.</string>
 
-    <string name="step1_title">اختر ملف الـ ISO</string>
-    <string name="step1_hint">اختر ملف ISO للعبة Resident Evil 4 على PS2. يُكتب التويك مباشرة داخل هذا الملف.</string>
-    <string name="select_iso">اختيار ISO</string>
+    <string name="step1_title">اختر ملف ISO أو CHD</string>
+    <string name="step1_hint">اختر ملف ISO أو CHD للعبة Resident Evil 4 على PS2. يُكتب التويك مباشرة داخل هذا الملف.</string>
+    <string name="select_iso">اختيار ISO / CHD</string>
     <string name="select_other_iso">اختيار ملف آخر</string>
     <string name="iso_region_format">المنطقة %1$s</string>
     <string name="iso_mode_in_place">قراءة مباشرة</string>
@@ -24,13 +24,13 @@
 
     <string name="step3_title">تطبيق الباتش</string>
     <string name="apply_patch">تطبيق الباتش</string>
-    <string name="apply_hint_no_iso">اختر ملف ISO أولًا لتفعيل الباتش.</string>
+    <string name="apply_hint_no_iso">اختر ملف ISO أو CHD أولًا لتفعيل الباتش.</string>
     <string name="done_step_description">اكتملت الخطوة</string>
 
     <string name="working_reading">جارٍ قراءة الملف…</string>
     <string name="working_copying">جارٍ نسخ الملف إلى تخزين التطبيق… قد يستغرق دقيقة للملفات الكبيرة.</string>
-    <string name="working_backup_patching">جارٍ نسخ الـ ISO احتياطيًا ثم التعديل بقائمة %1$s… أبقِ التطبيق مفتوحًا.</string>
-    <string name="working_patching">جارٍ التعديل بقائمة %1$s… أبقِ التطبيق مفتوحًا.</string>
+    <string name="working_backup_patching">جارٍ نسخ الملف احتياطيًا ثم التعديل بقائمة %1$s… يمكنك الخروج من التطبيق، سيستمر العمل.</string>
+    <string name="working_patching">جارٍ التعديل بقائمة %1$s… يمكنك الخروج من التطبيق، سيستمر العمل.</string>
 
     <string name="perm_title">صلاحية مطلوبة</string>
     <string name="perm_body">اسمح للتطبيق بالوصول إلى الملفات ليحفظ الملف المعدّل بجانب الأصلي، ثم اضغط اختيار ISO مرة أخرى.</string>
@@ -48,6 +48,22 @@
     <string name="credits_tweak_title">التويك الأصلي</string>
     <string name="credits_tweak_body">تويك Menu Tweaks PS2 (صحة الأعداء، Memory Viewer، الكاميرا الحرة، الشيتات وغيرها) هو عمل مطوريه الأصليين وليس عمل هذا التطبيق. هذه قنوات يوتيوب معروفة بنشره وتغطيته:</string>
     <string name="credits_tweak_video">فيديو عرض التويك الأصلي</string>
+    <string name="unsupported_file_toast">يُسمح فقط بملفات ISO أو CHD.</string>
+    <string name="unsupported_file_title">ملف غير مدعوم</string>
+    <string name="unsupported_file_body">يمكن استخدام صور اللعبة بصيغة .iso و .chd فقط. اختر ملف ISO أو CHD للعبة Resident Evil 4 على PS2.</string>
+
+    <string name="notif_channel_progress">تقدم الباتش</string>
+    <string name="notif_channel_done">نتيجة الباتش</string>
+    <string name="notif_running_title">جارٍ تطبيق التويك</string>
+    <string name="notif_running_text">جارٍ التعديل بقائمة %1$s…</string>
+    <string name="notif_done_title">تم تطبيق الباتش</string>
+    <string name="notif_error_title">تعذّر تطبيق الباتش</string>
+    <string name="notif_saved_to">تم الحفظ في: %1$s</string>
+
+    <string name="credits_thanks_title">شكر خاص</string>
+    <string name="credits_thanks_q8tp1">شكرًا لـ q8tp1 على اكتشاف مشكلة في التطبيق.</string>
+    <string name="credits_thanks_scorpion">شكرًا لـ scorpion على نشر التطبيق وتجربته واقتراح دعم CHD.</string>
+    <string name="credits_thanks_ahmed">شكرًا لـ Ahmed | Weto على تجربة النسخة التجريبية واكتشاف المشاكل.</string>
     <string name="credits_wrapper">مبني على منطق مُثبّت Menu Tweaks PS2 الأصلي.</string>
     <string name="version_format">الإصدار %1$s</string>
     <string name="no_browser">لا يوجد متصفح لفتح الرابط.</string>

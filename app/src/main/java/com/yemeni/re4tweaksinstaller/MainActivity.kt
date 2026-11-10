@@ -20,9 +20,9 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.core.os.LocaleListCompat
-import com.chaquo.python.PyObject
 import com.chaquo.python.Python
 import com.chaquo.python.android.AndroidPlatform
 import com.google.android.material.button.MaterialButton
@@ -48,11 +48,14 @@ import java.io.FileOutputStream
  *      PLACE (same file name). With the backup option on (default), the
  *      untouched ISO is first copied to <name>_Og.iso. Otherwise (no file
  *      access) the patched copy goes to Download as <name>_Patched.
- *   3. "Apply patch" calls iso_handler.run_full_patch() on a background
- *      thread: region detection, ELF extraction, the unchanged patch()
- *      logic, optional backup, and re-injection of the executable.
+ *   3. "Apply patch" starts PatchService, a foreground service that calls
+ *      iso_handler.run_full_patch(): region detection, ELF extraction, the
+ *      unchanged patch() logic, optional backup, and re-injection of the
+ *      executable. Because it is a service, the work continues when the app
+ *      is left or closed, with a progress notification.
  *   4. The result (or the installer's own error message) is shown in the
- *      status panel.
+ *      status panel; if the app is not on screen when it ends, a
+ *      notification reports it together with the saved path.
  *
  * UI: dark OLED theme, three step cards + credits. The app language
  * (English / Arabic, with RTL) is switched with AppCompat per-app locales.
@@ -99,6 +102,23 @@ class MainActivity : AppCompatActivity() {
     ) { uri: Uri? ->
         if (uri != null) {
             onIsoPicked(uri)
+        }
+    }
+
+    // Android 13+: the progress/result notifications need this permission. The
+    // patch starts either way; without it only the notifications are hidden.
+    private val notificationPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { startPatchJob() }
+
+    private val patchListener = object : PatchState.Listener {
+        override fun onPatchStarted(label: String) {
+            if (!busy) setBusy(true, label)
+        }
+
+        override fun onPatchFinished(result: PatchState.Result) {
+            PatchState.pendingResult = null
+            showPatchResult(result)
         }
     }
 
@@ -163,7 +183,7 @@ class MainActivity : AppCompatActivity() {
                 showStatus(Status.INFO, getString(R.string.perm_title), getString(R.string.perm_body))
                 return@setOnClickListener
             }
-            pickIsoLauncher.launch(arrayOf("*/*"))
+            pickIsoLauncher.launch(PICKER_MIME_TYPES)
         }
         patchButton.setOnClickListener { runPatch() }
 
@@ -178,6 +198,41 @@ class MainActivity : AppCompatActivity() {
 
         restoreState(savedInstanceState)
         renderIsoInfo()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        PatchState.appVisible = true
+        PatchState.listener = patchListener
+        syncWithPatchState()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        PatchState.appVisible = false
+        if (PatchState.listener === patchListener) PatchState.listener = null
+    }
+
+    /** Picks up a patch that is running, or finished while the app was not on screen. */
+    private fun syncWithPatchState() {
+        if (PatchState.running) {
+            hideStatus()
+            setBusy(true, PatchState.runningLabel)
+            return
+        }
+        val pending = PatchState.pendingResult ?: return
+        PatchState.pendingResult = null
+        showPatchResult(pending)
+    }
+
+    private fun showPatchResult(result: PatchState.Result) {
+        setBusy(false)
+        NotificationManagerCompat.from(this).cancel(PatchService.NOTIF_DONE)
+        if (result.ok) {
+            showStatus(Status.SUCCESS, getString(R.string.patch_success_title), result.text)
+        } else {
+            showStatus(Status.ERROR, getString(R.string.patch_error_title), result.text)
+        }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -492,8 +547,24 @@ class MainActivity : AppCompatActivity() {
         return File(dir, "${base}_Patched$ext").absolutePath
     }
 
+    /** Only .iso and .chd files are accepted (case-insensitive). */
+    private fun isAllowedImageName(name: String?): Boolean {
+        val ext = name?.substringAfterLast('.', "")?.lowercase() ?: return false
+        return ext == "iso" || ext == "chd"
+    }
+
     private fun onIsoPicked(uri: Uri) {
-        val displayName = queryDisplayName(uri) ?: "game.iso"
+        val pickedName = queryDisplayName(uri)
+        if (!isAllowedImageName(pickedName)) {
+            Toast.makeText(this, R.string.unsupported_file_toast, Toast.LENGTH_LONG).show()
+            showStatus(
+                Status.ERROR,
+                getString(R.string.unsupported_file_title),
+                getString(R.string.unsupported_file_body)
+            )
+            return
+        }
+        val displayName = pickedName ?: "game.iso"
         val realFile: File? = if (hasAllFilesAccess()) {
             resolveRealPath(uri)?.let { File(it) }
         } else {
@@ -581,55 +652,73 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun runPatch() {
+        if (localIsoPath == null || outputIsoPath == null) return
+        val prefs = getSharedPreferences(PREFS, MODE_PRIVATE)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
+            ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
+            != PackageManager.PERMISSION_GRANTED &&
+            !prefs.getBoolean(PREF_ASKED_NOTIFICATIONS, false)
+        ) {
+            prefs.edit().putBoolean(PREF_ASKED_NOTIFICATIONS, true).apply()
+            notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+            return
+        }
+        startPatchJob()
+    }
+
+    /** Hands the work to PatchService so it survives leaving or closing the app. */
+    private fun startPatchJob() {
         val isoPath = localIsoPath ?: return
         val outPath = outputIsoPath ?: return
-        val variant = variantName()
+        if (busy) return
         val backupPath = backupPathOrNull()
+        val label = variantLabel()
 
         hideStatus()
         setBusy(
             true,
-            if (backupPath != null) getString(R.string.working_backup_patching, variantLabel())
-            else getString(R.string.working_patching, variantLabel())
+            if (backupPath != null) getString(R.string.working_backup_patching, label)
+            else getString(R.string.working_patching, label)
         )
 
-        CoroutineScope(Dispatchers.IO).launch {
-            var ok = false
-            var text = ""
-            try {
-                val result: PyObject = Python.getInstance()
-                    .getModule("iso_handler")
-                    .callAttr("run_full_patch", isoPath, outPath, variant, null, backupPath)
-
-                // result is a Python dict; asMap() has PyObject keys, so a String
-                // lookup does not compile. Use dict.get() through callAttr instead.
-                ok = result.callAttr("get", "ok")?.toBoolean() ?: false
-                text = if (ok) {
-                    result.callAttr("get", "message")?.toString() ?: ""
-                } else {
-                    // These error strings come straight from the original
-                    // installer's fail() calls or from iso_handler's own
-                    // IsoHandlerError.
-                    result.callAttr("get", "error")?.toString() ?: ""
-                }
-            } catch (e: Exception) {
-                text = getString(R.string.unexpected_error, e.message ?: "")
-            }
-
-            withContext(Dispatchers.Main) {
-                setBusy(false)
-                if (ok) {
-                    showStatus(Status.SUCCESS, getString(R.string.patch_success_title), text)
-                } else {
-                    showStatus(Status.ERROR, getString(R.string.patch_error_title), text)
-                }
-            }
+        val intent = Intent(this, PatchService::class.java).apply {
+            action = PatchService.ACTION_START
+            putExtra(PatchService.EXTRA_ISO, isoPath)
+            putExtra(PatchService.EXTRA_OUT, outPath)
+            putExtra(PatchService.EXTRA_VARIANT, variantName())
+            putExtra(PatchService.EXTRA_BACKUP, backupPath)
+            putExtra(PatchService.EXTRA_RUNNING_TITLE, getString(R.string.notif_running_title))
+            putExtra(PatchService.EXTRA_RUNNING_TEXT, getString(R.string.notif_running_text, label))
+            putExtra(PatchService.EXTRA_DONE_TITLE, getString(R.string.notif_done_title))
+            putExtra(PatchService.EXTRA_ERROR_TITLE, getString(R.string.notif_error_title))
+            putExtra(PatchService.EXTRA_SAVED_TEXT, getString(R.string.notif_saved_to, outPath))
+            // "%s" is replaced by the service with the actual error message.
+            putExtra(PatchService.EXTRA_UNEXPECTED_FMT, getString(R.string.unexpected_error, "%s"))
+        }
+        try {
+            ContextCompat.startForegroundService(this, intent)
+        } catch (e: Exception) {
+            setBusy(false)
+            showStatus(
+                Status.ERROR,
+                getString(R.string.patch_error_title),
+                getString(R.string.unexpected_error, e.message ?: "")
+            )
         }
     }
 
     private companion object {
         const val PREFS = "settings"
         const val PREF_BACKUP = "backup_enabled"
+        const val PREF_ASKED_NOTIFICATIONS = "asked_notifications"
+        // Hint for the system file picker: ISO and CHD images. Providers often report
+        // them as octet-stream, so that type is included; the name is checked after.
+        val PICKER_MIME_TYPES = arrayOf(
+            "application/x-iso9660-image",
+            "application/x-cd-image",
+            "application/x-chd",
+            "application/octet-stream"
+        )
         const val GITHUB_URL = "https://github.com/YEMENI-modder"
     }
 }

@@ -624,6 +624,35 @@
                     </LinearLayout>
 
                     <TextView
+                        style="@style/TextAppearance.RE4.Body"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_lg"
+                        android:fontFamily="sans-serif-medium"
+                        android:text="@string/credits_thanks_title" />
+
+                    <TextView
+                        style="@style/TextAppearance.RE4.Secondary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_xs"
+                        android:text="@string/credits_thanks_q8tp1" />
+
+                    <TextView
+                        style="@style/TextAppearance.RE4.Secondary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_xs"
+                        android:text="@string/credits_thanks_scorpion" />
+
+                    <TextView
+                        style="@style/TextAppearance.RE4.Secondary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_xs"
+                        android:text="@string/credits_thanks_ahmed" />
+
+                    <TextView
                         android:id="@+id/versionText"
                         style="@style/TextAppearance.RE4.Caption"
                         android:layout_width="match_parent"

@@ -4,6 +4,8 @@
 
 <div dir="rtl">
 
+**الإصدار 1.0.1**
+
 [![Stars](https://img.shields.io/github/stars/YEMENI-modder/RE4Ps2TweaksInstaller?style=for-the-badge&logo=github)](https://github.com/YEMENI-modder/RE4Ps2TweaksInstaller/stargazers)
 [![Downloads](https://img.shields.io/github/downloads/YEMENI-modder/RE4Ps2TweaksInstaller/total?style=for-the-badge&logo=android&label=Downloads)](https://github.com/YEMENI-modder/RE4Ps2TweaksInstaller/releases/tag/V1)
 [![Build](https://img.shields.io/github/actions/workflow/status/YEMENI-modder/RE4Ps2TweaksInstaller/build.yml?style=for-the-badge&label=Build)](https://github.com/YEMENI-modder/RE4Ps2TweaksInstaller/actions)
@@ -151,6 +153,12 @@ python3 tools/build_arabic_dados.py [--preview out.png]
 - https://youtube.com/@herikre4ps2
 
 رابط تحميل التويك الأصلي / فيديو العرض: https://youtu.be/Sn5NMTdCEzw
+
+### شكر خاص
+
+- **q8tp1**: على اكتشاف مشكلة في التطبيق.
+- **scorpion**: على نشر التطبيق وتجربته واقتراح دعم CHD.
+- **Ahmed | Weto**: على تجربة النسخة التجريبية واكتشاف المشاكل.
 
 الحقوق نفسها معروضة داخل التطبيق.
 

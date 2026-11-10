@@ -17,6 +17,15 @@
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="29" />
 
+    <!--
+        The patch runs in a foreground service so it keeps going when the app
+        is left or closed, with a progress notification and a result one.
+    -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
     <application
         android:allowBackup="true"
         android:requestLegacyExternalStorage="true"
@@ -28,6 +37,7 @@
 
         <activity
             android:name=".MainActivity"
+            android:launchMode="singleTop"
             android:configChanges="orientation|screenSize|smallestScreenSize|screenLayout|keyboard|keyboardHidden|navigation|uiMode"
             android:exported="true">
             <intent-filter>
@@ -35,6 +45,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service
+            android:name=".PatchService"
+            android:exported="false"
+            android:foregroundServiceType="dataSync" />
 
         <!-- Remembers the app-language choice on Android 12 and older. -->
         <service

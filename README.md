@@ -2,6 +2,8 @@
 
 **English** | [العربية](README.ar.md)
 
+**Version 1.0.1**
+
 [![Stars](https://img.shields.io/github/stars/YEMENI-modder/RE4Ps2TweaksInstaller?style=for-the-badge&logo=github)](https://github.com/YEMENI-modder/RE4Ps2TweaksInstaller/stargazers)
 [![Downloads](https://img.shields.io/github/downloads/YEMENI-modder/RE4Ps2TweaksInstaller/total?style=for-the-badge&logo=android&label=Downloads)](https://github.com/YEMENI-modder/RE4Ps2TweaksInstaller/releases/tag/V1)
 [![Build](https://img.shields.io/github/actions/workflow/status/YEMENI-modder/RE4Ps2TweaksInstaller/build.yml?style=for-the-badge&label=Build)](https://github.com/YEMENI-modder/RE4Ps2TweaksInstaller/actions)
@@ -187,6 +189,12 @@ respect for their work:
 - https://youtube.com/@herikre4ps2
 
 Original tweak download / showcase video: https://youtu.be/Sn5NMTdCEzw
+
+### Special thanks
+
+- **q8tp1**: for discovering a bug in the app.
+- **scorpion**: for sharing the app, testing it and suggesting CHD support.
+- **Ahmed | Weto**: for trying the beta version and finding issues.
 
 The same credits are shown inside the app.
 
