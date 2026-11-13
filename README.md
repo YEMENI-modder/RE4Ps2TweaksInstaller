@@ -56,9 +56,10 @@ You need your own legally obtained ISO. No game files are included in this repos
 CHD files work just like ISOs: pick the `.chd`, choose a language, tap *Apply patch*.
 No conversion needed.
 
-- Only **DVD-type CHDs** are supported (the kind made by `chdman createdvd`, which is what
-  PS2 games use). If a CHD can't be read, the app tells you why; converting it to an ISO
-  always works as a fallback.
+- Both **DVD-type CHDs** (`chdman createdvd`) and **CD-type CHDs** (`chdman createcd`, e.g. a
+  PS2 ISO that was converted with the CD command) are supported, as long as the CD-type CHD
+  holds a single data track. If a CHD can't be read, the app tells you why; converting it
+  to an ISO always works as a fallback.
 - The result is saved in the same file, with the same backup option as ISOs. Patching a
   CHD takes longer than an ISO and needs free space of up to about **3x the CHD's size**
   while it works (original + backup + temporary file); the temporary file is removed when

@@ -377,8 +377,11 @@ class _chd_open:
     def __enter__(self):
         try:
             self.reader = chd_handler.ChdReader(self.path)
-            return chd_handler.ChdImage(self.reader)
+            return chd_handler.open_image(self.reader)
         except chd_handler.ChdError as e:
+            if self.reader is not None:
+                self.reader.close()
+                self.reader = None
             raise IsoHandlerError(str(e)) from e
 
     def __exit__(self, exc_type, exc, tb):
@@ -446,7 +449,7 @@ def _inject_chd(iso_path, iso_internal_path, patched_file_path, output_path):
     try:
         try:
             reader = chd_handler.ChdReader(iso_path)
-            img = chd_handler.ChdImage(reader)
+            img = chd_handler.open_image(reader)
             _off, old_lba, old_len = _find_root_record(img, iso_internal_path)
             if len(patched_bytes) == old_len:
                 img.seek(old_lba * _SECTOR)

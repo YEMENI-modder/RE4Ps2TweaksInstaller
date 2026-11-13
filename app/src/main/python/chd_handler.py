@@ -17,8 +17,13 @@ What it does
 
 Limits (raised as ChdError with a readable message)
   * CHD version 5 only (what chdman has written for years).
-  * DVD/HD style images (2048-byte units). CD-style CHDs (cdzl/cdlz/...) are
-    not supported.
+  * DVD style images (2048-byte units, `chdman createdvd`) and CD style
+    images (2448-byte frames, `chdman createcd`; codecs cdzl, cdlz and cdzs).
+    A CD-style CHD must hold ONE data track whose ISO9660 file system is
+    read as 2048-byte sectors (MODE1/2048, MODE1_RAW or MODE2 form 1 raw).
+    Audio hunks (cdfl/FLAC) are not needed for the data track and are only
+    copied untouched. Sectors added to a raw track get a sync/header but no
+    EDC/ECC (emulators only read the 2048 data bytes).
   * CHDs with a parent are not supported.
   * Only hunks that must be READ (the ISO9660 volume descriptor, the root
     directory and the boot executable) need a supported codec; all other
@@ -30,6 +35,7 @@ the patched file as not matching; emulators do not check them.
 
 import binascii
 import os
+import re
 import struct
 import zlib
 
@@ -55,6 +61,12 @@ C_PARENT_0 = 12
 C_PARENT_1 = 13
 
 SECTOR = 2048
+
+# CD-style CHDs: one "frame" is 2352 bytes of sector data + 96 bytes of subcode
+CD_SECTOR = 2352
+CD_SUB = 96
+CD_FRAME = CD_SECTOR + CD_SUB          # 2448 = unit size of a CD CHD
+CD_SYNC = b"\x00" + b"\xff" * 10 + b"\x00"
 
 
 class ChdError(Exception):
@@ -222,30 +234,86 @@ def _decode_zstd(data, hunkbytes):
     except ImportError:
         raise ChdError(
             "This CHD uses zstd compression, which is not available in this "
-            "app. Re-create the CHD with: chdman createdvd -c lzma,zlib "
-            "(or convert it to an ISO first)."
+            "app. Re-create the CHD without zstd (chdman createdvd -c lzma,zlib "
+            "or chdman createcd -c cdlz,cdzl), or convert it to an ISO first."
         )
+
+
+def _inflate(data, size):
+    return zlib.decompressobj(-15).decompress(data, size)
+
+
+def _unlzma(data, size):
+    if lzma is None:
+        raise ChdError("LZMA support is missing in this Python build.")
+    filt = [{
+        "id": lzma.FILTER_LZMA1, "dict_size": _lzma_dict_size(size),
+        "lc": 3, "lp": 0, "pb": 2,
+    }]
+    dec = lzma.LZMADecompressor(format=lzma.FORMAT_RAW, filters=filt)
+    return dec.decompress(data, max_length=size)
+
+
+def _decode_cd_hunk(codec, data, hunkbytes):
+    """
+    CD codecs (cdzl / cdlz / cdzs). The stored hunk is:
+        [ecc bitmap: 1 bit per frame][length of base stream: 2 or 3 bytes]
+        [base stream: all 2352-byte sectors][subcode stream: all 96-byte blocks]
+    The result is re-interleaved to frames of 2448 bytes. For frames flagged
+    in the ECC bitmap chdman removed the sync pattern and the P/Q parity;
+    the sync pattern is put back here, the parity bytes are left zero
+    (nothing that reads the 2048 data bytes needs them).
+    """
+    frames = hunkbytes // CD_FRAME
+    ecc_bytes = (frames + 7) // 8
+    len_bytes = 2 if hunkbytes < 65536 else 3
+    head = ecc_bytes + len_bytes
+    if len(data) < head:
+        raise ChdError("A CHD hunk is too short (corrupt CHD?).")
+    complen = int.from_bytes(data[ecc_bytes:head], "big")
+    base = data[head:head + complen]
+    sub = data[head + complen:]
+    sec_len = frames * CD_SECTOR
+    sub_len = frames * CD_SUB
+
+    if codec == b"cdzl":
+        base_out = _inflate(base, sec_len)
+        sub_out = _inflate(sub, sub_len) if sub else bytes(sub_len)
+    elif codec == b"cdlz":
+        base_out = _unlzma(base, sec_len)
+        sub_out = _inflate(sub, sub_len) if sub else bytes(sub_len)
+    elif codec == b"cdzs":
+        base_out = _decode_zstd(base, sec_len)
+        sub_out = _decode_zstd(sub, sub_len) if sub else bytes(sub_len)
+    else:
+        raise ChdError(
+            "This CD-type CHD stores a data hunk with the 'cdfl' (FLAC) "
+            "codec, which is only meant for audio tracks and is not supported."
+        )
+    if len(base_out) != sec_len or len(sub_out) != sub_len:
+        raise ChdError("A CHD hunk decompressed to the wrong size (corrupt CHD?).")
+
+    out = bytearray(hunkbytes)
+    for fr in range(frames):
+        o = fr * CD_FRAME
+        out[o:o + CD_SECTOR] = base_out[fr * CD_SECTOR:(fr + 1) * CD_SECTOR]
+        out[o + CD_SECTOR:o + CD_FRAME] = sub_out[fr * CD_SUB:(fr + 1) * CD_SUB]
+        if data[fr >> 3] & (1 << (fr & 7)):
+            out[o:o + 12] = CD_SYNC
+    return bytes(out)
 
 
 def _decode_hunk(codec, data, hunkbytes):
     if codec == b"zlib":
-        out = zlib.decompressobj(-15).decompress(data, hunkbytes)
+        out = _inflate(data, hunkbytes)
     elif codec == b"lzma":
-        if lzma is None:
-            raise ChdError("LZMA support is missing in this Python build.")
-        filt = [{
-            "id": lzma.FILTER_LZMA1, "dict_size": _lzma_dict_size(hunkbytes),
-            "lc": 3, "lp": 0, "pb": 2,
-        }]
-        dec = lzma.LZMADecompressor(format=lzma.FORMAT_RAW, filters=filt)
-        out = dec.decompress(data, max_length=hunkbytes)
+        out = _unlzma(data, hunkbytes)
     elif codec == b"zstd":
         out = _decode_zstd(data, hunkbytes)
     elif codec in (b"cdzl", b"cdlz", b"cdfl", b"cdzs"):
-        raise ChdError(
-            "This is a CD-type CHD. Only DVD-type CHDs (created with "
-            "'chdman createdvd') are supported."
-        )
+        if hunkbytes % CD_FRAME:
+            raise ChdError("A CD codec is used in a CHD that is not CD-type.")
+        return _decode_cd_hunk(codec, data, hunkbytes)
     else:
         name = codec.decode("latin-1", "replace")
         raise ChdError(
@@ -306,10 +374,14 @@ class ChdReader:
             raise ChdError("CHD files that need a parent CHD are not supported.")
         if self.hunkbytes == 0 or self.unitbytes == 0:
             raise ChdError("Corrupt CHD header.")
-        if self.unitbytes != SECTOR or self.hunkbytes % SECTOR:
+        if self.unitbytes == SECTOR and self.hunkbytes % SECTOR == 0:
+            self.kind = "dvd"
+        elif self.unitbytes == CD_FRAME and self.hunkbytes % CD_FRAME == 0:
+            self.kind = "cd"
+        else:
             raise ChdError(
-                "This CHD is not a DVD image (unit size is "
-                f"{self.unitbytes}). CD-type CHDs are not supported."
+                f"Unsupported CHD unit size ({self.unitbytes}). Only DVD-type "
+                "(2048) and CD-type (2448) CHDs are supported."
             )
         self.hunkcount = -(-self.logicalbytes // self.hunkbytes)
         self.compressed = self.compressors[0] != bytes(4)
@@ -428,6 +500,27 @@ class ChdReader:
         self._cache[index] = data
         return data
 
+    def cd_tracks(self):
+        """Track list of a CD-type CHD, from its CHT2 / CHTR metadata."""
+        tracks = []
+        for tag, _flags, data in self.read_metadata():
+            if tag in (b"CHGT", b"CHGD"):
+                raise ChdError("GD-ROM CHDs are not supported.")
+            if tag not in (b"CHT2", b"CHTR"):
+                continue
+            text = data.rstrip(b"\0").decode("latin-1")
+            fields = dict(re.findall(r"(\w+):(\S+)", text))
+            try:
+                tracks.append({
+                    "track": int(fields["TRACK"]),
+                    "type": fields.get("TYPE", ""),
+                    "frames": int(fields["FRAMES"]),
+                })
+            except (KeyError, ValueError):
+                continue
+        tracks.sort(key=lambda t: t["track"])
+        return tracks
+
     def read_metadata(self):
         """Returns the metadata chain as a list of (tag, flags, data)."""
         out = []
@@ -484,6 +577,13 @@ class ChdImage:
     def close(self):
         pass
 
+    # used by write_chd
+    def logical_size(self):
+        return self.size
+
+    def adjust_metadata(self, meta):
+        return meta
+
     def _hunk_for_read(self, i):
         if i in self.overlay:
             return self.overlay[i]
@@ -527,6 +627,168 @@ class ChdImage:
         if pos > self.size:
             self.size = pos
         return len(mv)
+
+
+class ChdCdImage:
+    """
+    File-like view of the ISO9660 data inside a CD-type CHD, as plain
+    2048-byte sectors (same interface as ChdImage). Sector n of the ISO is
+    frame (base + n) of the CHD; its 2048 data bytes sit at `data_off` inside
+    the frame: 0 for MODE1/2048, 16 for MODE1_RAW, 24 for MODE2 form 1 raw.
+    Writing past the end appends sectors to the (single) data track.
+    """
+
+    def __init__(self, reader):
+        self.r = reader
+        self.fph = reader.hunkbytes // CD_FRAME          # frames per hunk
+        self.overlay = {}
+        self.pos = 0
+        tracks = reader.cd_tracks()
+        self.single_track = len(tracks) <= 1
+        meta_frames = tracks[0]["frames"] if tracks else reader.logicalbytes // CD_FRAME
+        self.base, self.data_off = self._probe()
+        self.raw = self.data_off != 0
+        self.orig_sectors = max(meta_frames - self.base, 0)
+        self.size = self.orig_sectors * SECTOR
+        self._inited = set()
+
+    def _frame(self, frame):
+        h, fi = divmod(frame, self.fph)
+        if h >= self.r.hunkcount:
+            return bytes(CD_FRAME)
+        return self.r.read_hunk(h)[fi * CD_FRAME:(fi + 1) * CD_FRAME]
+
+    def _probe(self):
+        for base in (0, 150):
+            fr = self._frame(base + 16)
+            for off in (0, 16, 24):
+                if fr[off] == 1 and fr[off + 1:off + 6] == b"CD001":
+                    return base, off
+        raise ChdError(
+            "No ISO9660 file system was found in this CD-type CHD "
+            "(is it really a PS2 game image?)."
+        )
+
+    # file protocol
+    def seek(self, offset, whence=0):
+        if whence == 0:
+            self.pos = offset
+        elif whence == 1:
+            self.pos += offset
+        else:
+            self.pos = self.size + offset
+        if self.pos < 0:
+            raise ValueError("negative seek")
+        return self.pos
+
+    def tell(self):
+        return self.pos
+
+    def flush(self):
+        pass
+
+    def close(self):
+        pass
+
+    def _hunk_for_read(self, h):
+        if h in self.overlay:
+            return self.overlay[h]
+        if h < self.r.hunkcount:
+            return self.r.read_hunk(h)
+        return bytes(self.r.hunkbytes)
+
+    def read(self, n=-1):
+        if n is None or n < 0 or self.pos + n > self.size:
+            n = max(0, self.size - self.pos)
+        out = bytearray()
+        pos = self.pos
+        end = pos + n
+        while pos < end:
+            sector, within = divmod(pos, SECTOR)
+            take = min(SECTOR - within, end - pos)
+            h, fi = divmod(self.base + sector, self.fph)
+            o = fi * CD_FRAME + self.data_off + within
+            out += self._hunk_for_read(h)[o:o + take]
+            pos += take
+        self.pos = pos
+        return bytes(out)
+
+    def _init_raw_frame(self, ba, fi, sector):
+        """Sync + header (+ XA subheader) for a sector added to a raw track."""
+        o = fi * CD_FRAME
+        ba[o:o + 12] = CD_SYNC
+        total = self.base + sector + 150
+        m, rest = divmod(total, 60 * 75)
+        sec, fr = divmod(rest, 75)
+        bcd = lambda x: ((x // 10) << 4) | (x % 10)
+        ba[o + 12:o + 16] = bytes([bcd(m), bcd(sec), bcd(fr), 1 if self.data_off == 16 else 2])
+        if self.data_off == 24:
+            ba[o + 16:o + 24] = bytes([0, 0, 8, 0, 0, 0, 8, 0])
+
+    def write(self, data):
+        mv = memoryview(bytes(data))
+        pos = self.pos
+        if pos + len(mv) > self.size and not self.single_track:
+            raise ChdError(
+                "This CD-type CHD has several tracks, so the patched file "
+                "cannot be added to it. Convert it to an ISO first."
+            )
+        done = 0
+        while done < len(mv):
+            sector, within = divmod(pos, SECTOR)
+            take = min(SECTOR - within, len(mv) - done)
+            h, fi = divmod(self.base + sector, self.fph)
+            ba = self.overlay.get(h)
+            if ba is None:
+                ba = bytearray(self._hunk_for_read(h))
+                self.overlay[h] = ba
+            if self.raw and sector >= self.orig_sectors and sector not in self._inited:
+                self._inited.add(sector)
+                self._init_raw_frame(ba, fi, sector)
+            o = fi * CD_FRAME + self.data_off + within
+            ba[o:o + take] = mv[done:done + take]
+            pos += take
+            done += take
+        self.pos = pos
+        if pos > self.size:
+            self.size = pos
+        return len(mv)
+
+    # used by write_chd
+    def _sectors(self):
+        return -(-self.size // SECTOR)
+
+    def logical_size(self):
+        total = self.r.logicalbytes // CD_FRAME
+        if self._sectors() > self.orig_sectors:
+            frames = self.base + self._sectors()
+            total = max(total, -(-frames // 4) * 4)     # tracks are padded to 4 frames
+        return total * CD_FRAME
+
+    def adjust_metadata(self, meta):
+        grown = self._sectors() - self.orig_sectors
+        if grown <= 0:
+            return meta
+        out = []
+        done = False
+        for tag, flags, data in meta:
+            if not done and tag in (b"CHT2", b"CHTR"):
+                text = data.decode("latin-1")
+                if re.search(r"TRACK:1\b", text):
+                    m = re.search(r"FRAMES:(\d+)", text)
+                    if m:
+                        text = text[:m.start(1)] + str(int(m.group(1)) + grown) + text[m.end(1):]
+                        data = text.encode("latin-1")
+                        done = True
+            out.append((tag, flags, data))
+        return out
+
+
+def open_image(reader):
+    """Returns the right file-like disc view for the CHD kind."""
+    if reader.kind == "cd":
+        return ChdCdImage(reader)
+    return ChdImage(reader)
 
 
 # --------------------------------------------------------------------------
@@ -585,14 +847,15 @@ def write_chd(reader, image, out_path):
     plus its in-memory changes). Unchanged hunks are copied raw.
     """
     hb = reader.hunkbytes
-    new_count = -(-image.size // hb)
+    new_logical = image.logical_size()
+    new_count = -(-new_logical // hb)
     if new_count < reader.hunkcount:
         raise ChdError("Internal error: the image shrank.")
     modified = set(image.overlay)
 
     plan = []
     for i in range(new_count):
-        if i in modified:
+        if i in modified or i >= reader.hunkcount:
             plan.append(("mem", i))
             continue
         t, length, offset, crc = reader.entries[i]
@@ -606,7 +869,7 @@ def write_chd(reader, image, out_path):
 
     def hunk_bytes(kind, i):
         if kind == "mem":
-            return bytes(image.overlay[i])
+            return bytes(image.overlay[i]) if i in image.overlay else bytes(hb)
         return reader.read_hunk(i)
 
     entries = []
@@ -620,10 +883,10 @@ def write_chd(reader, image, out_path):
             _k, t, length, _offset, crc = item
             entries.append((t, length, crc, 0))
 
-    meta = reader.read_metadata()
+    meta = image.adjust_metadata(reader.read_metadata())
 
     header = bytearray(reader.header)
-    struct.pack_into(">Q", header, 32, image.size)
+    struct.pack_into(">Q", header, 32, new_logical)
 
     with open(out_path, "wb") as out:
         out.write(bytes(HEADER_LEN))
