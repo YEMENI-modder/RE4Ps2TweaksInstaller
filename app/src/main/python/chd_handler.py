@@ -18,11 +18,10 @@ What it does
 Limits (raised as ChdError with a readable message)
   * CHD version 5 only (what chdman has written for years).
   * DVD style images (2048-byte units, `chdman createdvd`) and CD style
-    images (2448-byte frames, `chdman createcd`; codecs cdzl, cdlz and cdzs).
+    images (2448-byte frames, `chdman createcd`; codecs cdzl, cdlz, cdfl and cdzs).
     A CD-style CHD must hold ONE data track whose ISO9660 file system is
     read as 2048-byte sectors (MODE1/2048, MODE1_RAW or MODE2 form 1 raw).
-    Audio hunks (cdfl/FLAC) are not needed for the data track and are only
-    copied untouched. Sectors added to a raw track get a sync/header but no
+    cdfl (FLAC) hunks are decoded by a small built-in FLAC decoder. Sectors added to a raw track get a sync/header but no
     EDC/ECC (emulators only read the 2048 data bytes).
   * CHDs with a parent are not supported.
   * Only hunks that must be READ (the ISO9660 volume descriptor, the root
@@ -254,6 +253,179 @@ def _unlzma(data, size):
     return dec.decompress(data, max_length=size)
 
 
+class _FlacBits:
+    def __init__(self, data, pos=0):
+        self.d = data
+        self.pos = pos * 8
+
+    def read(self, n):
+        if n == 0:
+            return 0
+        end = (self.pos + n + 7) >> 3
+        if end > len(self.d):
+            raise ChdError("Truncated FLAC data in a CD hunk.")
+        v = int.from_bytes(self.d[self.pos >> 3:end], "big")
+        v = (v >> (end * 8 - self.pos - n)) & ((1 << n) - 1)
+        self.pos += n
+        return v
+
+    def signed(self, n):
+        v = self.read(n)
+        return v - (1 << n) if n and v >> (n - 1) else v
+
+    def unary(self):
+        q = 0
+        while self.read(1) == 0:
+            q += 1
+        return q
+
+    def align(self):
+        self.pos = (self.pos + 7) & ~7
+
+
+def _flac_residual(br, blocksize, order, out):
+    method = br.read(2)
+    if method > 1:
+        raise ChdError("Unsupported FLAC residual coding.")
+    pbits = 4 if method == 0 else 5
+    escape = (1 << pbits) - 1
+    porder = br.read(4)
+    for part in range(1 << porder):
+        n = (blocksize >> porder) - (order if part == 0 else 0)
+        k = br.read(pbits)
+        if k == escape:
+            bits = br.read(5)
+            for _ in range(n):
+                out.append(br.signed(bits))
+        else:
+            for _ in range(n):
+                q = br.unary()
+                u = (q << k) | br.read(k)
+                out.append((u >> 1) ^ -(u & 1))
+
+
+def _flac_subframe(br, blocksize, bps):
+    if br.read(1):
+        raise ChdError("Corrupt FLAC subframe.")
+    kind = br.read(6)
+    wasted = 0
+    if br.read(1):
+        wasted = br.unary() + 1
+    bps -= wasted
+    if kind == 0:
+        samples = [br.signed(bps)] * blocksize
+    elif kind == 1:
+        samples = [br.signed(bps) for _ in range(blocksize)]
+    elif 8 <= kind <= 12 or kind >= 32:
+        if kind >= 32:
+            order = (kind & 31) + 1
+        else:
+            order = kind & 7
+        samples = [br.signed(bps) for _ in range(order)]
+        if kind >= 32:
+            prec = br.read(4) + 1
+            shift = br.signed(5)
+            coefs = [br.signed(prec) for _ in range(order)]
+        res = []
+        _flac_residual(br, blocksize, order, res)
+        for r in res:
+            n = len(samples)
+            if kind >= 32:
+                acc = 0
+                for j in range(order):
+                    acc += coefs[j] * samples[n - 1 - j]
+                samples.append(r + (acc >> shift))
+            elif order == 0:
+                samples.append(r)
+            elif order == 1:
+                samples.append(r + samples[n - 1])
+            elif order == 2:
+                samples.append(r + 2 * samples[n - 1] - samples[n - 2])
+            elif order == 3:
+                samples.append(r + 3 * samples[n - 1] - 3 * samples[n - 2] + samples[n - 3])
+            else:
+                samples.append(r + 4 * samples[n - 1] - 6 * samples[n - 2]
+                               + 4 * samples[n - 3] - samples[n - 4])
+    else:
+        raise ChdError("Unsupported FLAC subframe type.")
+    if wasted:
+        samples = [x << wasted for x in samples]
+    return samples
+
+
+def _decode_flac_cd(data, nsamples):
+    """
+    Decodes the header-less FLAC stream of a 'cdfl' hunk (16-bit stereo)
+    into nsamples sample pairs, returned as little-endian PCM bytes (= the
+    original sector bytes). Returns (pcm_bytes, offset_after_stream).
+    """
+    br = _FlacBits(data)
+    left_all = []
+    right_all = []
+    while len(left_all) < nsamples:
+        if br.read(14) != 0x3FFE:
+            raise ChdError("Corrupt FLAC frame in a CD hunk.")
+        br.read(2)
+        bscode = br.read(4)
+        rate = br.read(4)
+        chan = br.read(4)
+        bpscode = br.read(3)
+        br.read(1)
+        first = br.read(8)                       # UTF-8 coded frame number
+        extra = 0 if first < 0x80 else (0 if first < 0xC0 else
+                (1 if first < 0xE0 else 2 if first < 0xF0 else 3 if first < 0xF8 else
+                 4 if first < 0xFC else 5 if first < 0xFE else 6))
+        br.read(8 * extra)
+        if bscode == 1:
+            bs = 192
+        elif 2 <= bscode <= 5:
+            bs = 576 << (bscode - 2)
+        elif bscode == 6:
+            bs = br.read(8) + 1
+        elif bscode == 7:
+            bs = br.read(16) + 1
+        elif bscode >= 8:
+            bs = 256 << (bscode - 8)
+        else:
+            raise ChdError("Unsupported FLAC block size.")
+        if rate == 12:
+            br.read(8)
+        elif rate in (13, 14):
+            br.read(16)
+        br.read(8)                               # header CRC-8
+        bps = {0: 16, 1: 8, 2: 12, 4: 16, 5: 20, 6: 24}.get(bpscode)
+        # 1 = stereo independent, 8/9/10 = left-side / side-right / mid-side
+        if bps != 16 or chan not in (1, 8, 9, 10):
+            raise ChdError("Unsupported FLAC layout in a CD hunk.")
+        a = _flac_subframe(br, bs, bps + (1 if chan == 9 else 0))
+        b = _flac_subframe(br, bs, bps + (1 if chan in (8, 10) else 0))
+        if chan == 8:
+            l, r = a, [x - y for x, y in zip(a, b)]
+        elif chan == 9:
+            l, r = [x + y for x, y in zip(a, b)], b
+        elif chan == 10:
+            l = []
+            r = []
+            for m, sd in zip(a, b):
+                m = (m << 1) | (sd & 1)
+                l.append((m + sd) >> 1)
+                r.append((m - sd) >> 1)
+        else:
+            l, r = a, b
+        left_all += l
+        right_all += r
+        br.align()
+        br.read(16)                              # frame CRC-16
+    if len(left_all) != nsamples:
+        raise ChdError("A CD hunk decoded to the wrong size (corrupt CHD?).")
+    pcm = bytearray(nsamples * 4)
+    pcm[0::4] = bytes(x & 0xFF for x in left_all)
+    pcm[1::4] = bytes((x >> 8) & 0xFF for x in left_all)
+    pcm[2::4] = bytes(x & 0xFF for x in right_all)
+    pcm[3::4] = bytes((x >> 8) & 0xFF for x in right_all)
+    return bytes(pcm), br.pos >> 3
+
+
 def _decode_cd_hunk(codec, data, hunkbytes):
     """
     CD codecs (cdzl / cdlz / cdzs). The stored hunk is:
@@ -265,6 +437,21 @@ def _decode_cd_hunk(codec, data, hunkbytes):
     (nothing that reads the 2048 data bytes needs them).
     """
     frames = hunkbytes // CD_FRAME
+    if codec == b"cdfl":
+        # [FLAC stream of all sector data][zlib subcode]; no ECC bitmap
+        sec_len = frames * CD_SECTOR
+        base_out, off = _decode_flac_cd(data, sec_len // 4)
+        sub_len = frames * CD_SUB
+        sub = data[off:]
+        sub_out = _inflate(sub, sub_len) if sub else bytes(sub_len)
+        if len(sub_out) != sub_len:
+            raise ChdError("A CHD hunk decompressed to the wrong size (corrupt CHD?).")
+        out = bytearray(hunkbytes)
+        for fr in range(frames):
+            o = fr * CD_FRAME
+            out[o:o + CD_SECTOR] = base_out[fr * CD_SECTOR:(fr + 1) * CD_SECTOR]
+            out[o + CD_SECTOR:o + CD_FRAME] = sub_out[fr * CD_SUB:(fr + 1) * CD_SUB]
+        return bytes(out)
     ecc_bytes = (frames + 7) // 8
     len_bytes = 2 if hunkbytes < 65536 else 3
     head = ecc_bytes + len_bytes
@@ -286,10 +473,7 @@ def _decode_cd_hunk(codec, data, hunkbytes):
         base_out = _decode_zstd(base, sec_len)
         sub_out = _decode_zstd(sub, sub_len) if sub else bytes(sub_len)
     else:
-        raise ChdError(
-            "This CD-type CHD stores a data hunk with the 'cdfl' (FLAC) "
-            "codec, which is only meant for audio tracks and is not supported."
-        )
+        raise ChdError("Unknown CD codec.")
     if len(base_out) != sec_len or len(sub_out) != sub_len:
         raise ChdError("A CHD hunk decompressed to the wrong size (corrupt CHD?).")
 
