@@ -38,4 +38,7 @@
     <color name="on_info_container">#DBEAFE</color>
 
     <color name="warning">#FBBF24</color>
+    <color name="warning_container">#2A2008</color>
+    <color name="warning_border">#92400E</color>
+    <color name="on_warning_container">#FEF3C7</color>
 </resources>

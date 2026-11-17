@@ -27,6 +27,7 @@ import com.chaquo.python.Python
 import com.chaquo.python.android.AndroidPlatform
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.button.MaterialButtonToggleGroup
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.materialswitch.MaterialSwitch
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import kotlinx.coroutines.CoroutineScope
@@ -168,6 +169,7 @@ class MainActivity : AppCompatActivity() {
 
         languageButton.setOnClickListener { toggleAppLanguage() }
         findViewById<MaterialButton>(R.id.githubButton).setOnClickListener { openUrl(GITHUB_URL) }
+        findViewById<MaterialButton>(R.id.noticeButton).setOnClickListener { showNoticeDialog() }
         // Credits for the original tweak's authors: each button carries its URL in `tag`.
         val tweakLinks = findViewById<LinearLayout>(R.id.tweakLinks)
         for (i in 0 until tweakLinks.childCount) {
@@ -274,6 +276,15 @@ class MainActivity : AppCompatActivity() {
         AppCompatDelegate.setApplicationLocales(
             LocaleListCompat.forLanguageTags(if (isArabic) "en" else "ar")
         )
+    }
+
+    /** The full terms of use, shown from the yellow warning above the picker. */
+    private fun showNoticeDialog() {
+        MaterialAlertDialogBuilder(this)
+            .setTitle(R.string.notice_title)
+            .setMessage(R.string.notice_full)
+            .setPositiveButton(android.R.string.ok, null)
+            .show()
     }
 
     private fun openUrl(url: String) {

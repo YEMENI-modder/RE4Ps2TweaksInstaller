@@ -2,7 +2,7 @@
 
 **English** | [العربية](README.ar.md)
 
-**Version 1.0.1**
+**Version 1.0.2**
 
 [![Stars](https://img.shields.io/github/stars/YEMENI-modder/RE4Ps2TweaksInstaller?style=for-the-badge&logo=github)](https://github.com/YEMENI-modder/RE4Ps2TweaksInstaller/stargazers)
 [![Downloads](https://img.shields.io/github/downloads/YEMENI-modder/RE4Ps2TweaksInstaller/total?style=for-the-badge&logo=android&label=Downloads)](https://github.com/YEMENI-modder/RE4Ps2TweaksInstaller/releases/tag/V1.1)
@@ -173,6 +173,65 @@ python3 tools/build_arabic_dados.py [--preview out.png]
 The Arabic script needs `pillow`, `arabic-reshaper` and `python-bidi`, plus `unicorn` and
 `capstone` for its self-test. The scripts also update the SHA-256 values in the profile
 JSON files, because the installer refuses data whose hash doesn't match.
+
+## Terms of use and attribution
+
+**About this app**
+
+This app is only an installer. The Menu Tweaks it installs is the work of its original authors
+and is not claimed by this app's creators (see [Credits](#credits)); this includes the original
+Portuguese menu. The tweak files bundled in the app and their accompanying scripts belong to
+their original authors, and these terms do not cover them. These terms cover the installer app,
+its source code, and the Arabic menu translation made by Yemeni.
+
+**Using the installer**
+
+It is strictly prohibited to patch a mod with this installer and then publish or share it with a
+statement such as "Patched by [Name]" or "Modified by [Name]" in a way that suggests you did the
+work by hand, when it was actually done with this app.
+
+When you publish a mod (in a video or as a download link) that was patched using this installer,
+you must do one of the following:
+
+1. Credit the installer or one of its creators (**Yemeni** or **Scorpion**). You may also write
+   your own name, as long as the installer is credited with it, for example
+   "Patched by [Name] using Yemeni's installer".
+2. Mention no names at all: not yours and not anyone else's. This is allowed because you are not
+   claiming the work for yourself or for anyone else.
+
+**Mods with the Arabic menu**
+
+If your mod contains the Arabic menu installed by this app, option 2 does not apply: you must
+credit the installer or its creators (Yemeni or Scorpion).
+
+The English menu may be used freely, with no credit required. The Portuguese menu belongs to the
+original authors.
+
+Example of an allowed description: *"[Mod Name] with the RE4 Menu Tweaks installed."* It states
+what was done without claiming ownership of the work.
+
+**Game images**
+
+Publishing or sharing a game image (ISO/CHD) patched with this app is not allowed, because it
+contains the full game. Share only the mod's own files or a patch, never the game itself.
+
+**Source code and translations**
+
+You may not download the source code and replace the name Yemeni with your own, or remove the
+creators' names, in order to claim the app or its development as your own. Modified versions are
+fine as long as the original names stay and the version is clearly marked, for example
+"Modified version by [Name]".
+
+The Arabic menu translation and the Arabic text tools in this project are Yemeni's work. If you
+reuse them in your own project, keep his credit.
+
+The app is open source to help developers and modders: to study how it works, learn from its
+code, and contribute to its development. It is not meant for taking credit for someone else's work.
+
+**Agreement**
+
+By using this app, you confirm that you have read and agree to these terms. The same terms are
+shown inside the app, above the file picker.
 
 ## Credits
 
