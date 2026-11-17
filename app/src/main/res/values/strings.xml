@@ -74,7 +74,7 @@
     <string name="version_format">Version %1$s</string>
     <string name="no_browser">No browser found to open the link.</string>
     <string name="notice_title">Terms of use &amp; attribution</string>
-    <string name="notice_short">This app is only an installer; the Menu Tweaks belong to their original authors (see Credits). Mods patched with this installer must credit the installer or its creators (Yemeni / Scorpion), or mention no names at all; mods with the Arabic menu must always credit it. Don\'t share patched game images (ISO/CHD), and never claim this app as yours.</string>
+    <string name="notice_short">This app is only an installer; the Menu Tweaks belong to their original authors (see Credits). Mods patched with this installer must credit the installer or its creators (Yemeni / Scorpion), or mention no names at all; mods with the Arabic menu must always credit it. This app doesn\'t encourage piracy: use your own legally obtained game. Never claim this app as yours.</string>
     <string name="notice_read_more">Read the full terms</string>
     <string name="notice_full">About this app
 
@@ -100,9 +100,9 @@ Example of an allowed description:
 “[Mod Name] with the RE4 Menu Tweaks installed.”
 It states what was done without claiming ownership of the work.
 
-Game images
+Disclaimer
 
-Publishing or sharing a game image (ISO/CHD) patched with this app is not allowed, because it contains the full game. Share only the mod\'s own files or a patch, never the game itself.
+This app does not encourage piracy and does not distribute any game files. You must obtain the game yourself, legally. What anyone does with a mod edited by this app, including publishing a game image that contains it, is their own responsibility, and the creators of this app have no part in it. This does not change the credit rules above.
 
 Source code and translations
 

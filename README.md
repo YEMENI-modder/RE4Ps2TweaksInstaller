@@ -210,10 +210,12 @@ original authors.
 Example of an allowed description: *"[Mod Name] with the RE4 Menu Tweaks installed."* It states
 what was done without claiming ownership of the work.
 
-**Game images**
+**Disclaimer**
 
-Publishing or sharing a game image (ISO/CHD) patched with this app is not allowed, because it
-contains the full game. Share only the mod's own files or a patch, never the game itself.
+This app does not encourage piracy and does not distribute any game files. You must obtain the
+game yourself, legally. What anyone does with a mod edited by this app, including publishing a game
+image that contains it, is their own responsibility, and the creators of this app have no part in it.
+This does not change the credit rules above.
 
 **Source code and translations**
 
